@@ -1,5 +1,4 @@
 // src/pages/dashboard/Dashboard.tsx
-import Layout from "../../components/layout/Layout";
 import { useAuth } from "../../context/AuthContext";
 import "./Dashboard.css";
 
@@ -25,8 +24,7 @@ export default function Dashboard() {
   };
 
   return (
-    <Layout>
-      <div className="dashboard-container">
+    <div className="dashboard-container">
         <div className="dashboard-header">
           <h1>{getGreeting()}, {user?.fullName || "Farmer"}! 👋</h1>
           <p className="welcome-text">Welcome to your Soil Monitoring Dashboard</p>
@@ -86,6 +84,5 @@ export default function Dashboard() {
           </ul>
         </div>
       </div>
-    </Layout>
   );
 }
