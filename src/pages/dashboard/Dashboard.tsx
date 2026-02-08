@@ -1,12 +1,12 @@
-import Navbar from "../components/Navbar";
-import "./Home.css";
+import Navbar from "../../components/layout/Navbar/Navbar";
+import "./Dashboard.css";
 
-export default function Home() {
+export default function Dashboard() {
   return (
     <>
       <Navbar />
 
-      <div className="home-container">
+      <div className="dashboard-container">
         <h1>Welcome to Soil Monitoring Dashboard</h1>
 
         <div className="stats-grid">
