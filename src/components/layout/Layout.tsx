@@ -1,5 +1,6 @@
+// src/components/layout/Layout.tsx
 import React from "react";
-import Navbar from "./layout/Navbar/Navbar";
+import Navbar from "./Navbar/Navbar";
 import "./Layout.css";
 
 interface LayoutProps {
