@@ -53,6 +53,10 @@ export default function Navbar() {
           Readings
         </Link>
 
+        <Link to="/alerts" onClick={() => setMenuOpen(false)}>
+          Alerts
+        </Link>
+
         {/* NEW - Profile page link */}
         <Link to="/profile" onClick={() => setMenuOpen(false)}>
           Profile

@@ -6,6 +6,7 @@ import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Devices from "./pages/devices/Devices";
 import Readings from "./pages/readings/Readings";
+import Alerts from "./pages/alerts/Alerts";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import "./App.css";
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/devices" element={<Devices />} />
           <Route path="/readings" element={<Readings />} />
+          <Route path="/alerts" element={<Alerts />} />
 
           {/* ADDED - use real profile page instead of placeholder */}
           <Route path="/profile" element={<Profile />} />

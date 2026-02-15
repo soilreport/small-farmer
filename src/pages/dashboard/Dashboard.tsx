@@ -1,11 +1,11 @@
 // src/pages/dashboard/Dashboard.tsx
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom"; //changed
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const navigate = useNavigate(); //canged
+  const navigate = useNavigate();
 
   const soilData = {
     temperature: 24,
@@ -26,7 +26,6 @@ export default function Dashboard() {
   };
 
   const handleExport = () => {
-    //added proper export function
     const blob = new Blob([JSON.stringify(soilData, null, 2)], {
       type: "application/json",
     });
@@ -47,26 +46,28 @@ export default function Dashboard() {
         </p>
       </div>
 
-      {/* cards stay same */}
-
       <div className="dashboard-actions">
         <button
           className="action-btn"
-          onClick={() => navigate("/devices")} //CHANGED
+          onClick={() => navigate("/readings")}
+        >
+          View Readings
+        </button>
+        <button
+          className="action-btn"
+          onClick={() => navigate("/devices")}
         >
           View Devices
         </button>
-
         <button
           className="action-btn"
-          onClick={() => navigate("/readings")} //CHANnGED
+          onClick={() => navigate("/alerts")}
         >
           Check Alerts
         </button>
-
         <button
           className="action-btn"
-          onClick={handleExport} //CHANGED
+          onClick={handleExport}
         >
           Export Data
         </button>

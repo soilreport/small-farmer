@@ -1,46 +1,46 @@
-/* src/pages/devices/Devices.css */
+/* src/pages/alerts/Alerts.css */
 
-.devices-container {
+.alerts-container {
   padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.devices-container h1 {
+.alerts-container h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   color: #1b5e20;
 }
 
-.devices-container > p {
+.alerts-container > p {
   color: #555;
   margin-bottom: 1.5rem;
 }
 
-.devices-summary-card {
+.alerts-summary-card {
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  border-left: 5px solid #9775fa;
+  border-left: 5px solid #ff922b;
   margin-bottom: 2rem;
   max-width: 320px;
 }
 
-.devices-summary-card h3 {
+.alerts-summary-card h3 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
   color: #333;
 }
 
-.devices-summary-card .value {
+.alerts-summary-card .value {
   font-size: 2rem;
   font-weight: bold;
   margin: 0.5rem 0;
   color: #1b5e20;
 }
 
-.devices-summary-card .status {
+.alerts-summary-card .status {
   font-size: 0.9rem;
   color: #666;
   margin: 0;
@@ -50,40 +50,44 @@
   display: inline-block;
 }
 
-.devices-list-section h2 {
+.alerts-list h2 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
   color: #333;
 }
 
-.devices-list {
+.alerts-list ul {
   list-style: none;
   padding: 0;
 }
 
-.device-item {
+.alerts-list .alert-item {
   padding: 1rem;
-  background: #f8f9fa;
   border-radius: 8px;
   margin-bottom: 0.5rem;
-  border-left: 4px solid #9775fa;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  background: #fff8f0;
+  border-left: 4px solid #ff922b;
 }
 
-.device-name {
+.alerts-list .alert-item.info {
+  background: #e3f2fd;
+  border-left-color: #1976d2;
+}
+
+.alerts-list .alert-type {
   font-weight: 600;
   color: #333;
-  margin-bottom: 0.35rem;
 }
 
-.device-meta {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  font-size: 0.9rem;
+.alerts-list .alert-location {
   color: #666;
 }
 
-.device-status {
-  color: #2e7d32;
-  font-weight: 500;
+.alerts-list .alert-time {
+  font-size: 0.9rem;
+  color: #888;
 }
