@@ -1,0 +1,121 @@
+/* src/pages/profile/Profile.css */
+
+.profile-container {
+  padding: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  margin-bottom: 1.25rem;
+}
+
+.profile-header h1 {
+  color: #1b5e20;
+  margin-bottom: 0.35rem;
+}
+
+.profile-subtitle {
+  color: #666;
+}
+
+.profile-card {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid #2e7d32;
+}
+
+.profile-row,
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-row:last-child,
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-weight: 600;
+  color: #333;
+}
+
+.value {
+  color: #444;
+}
+
+.badge {
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.badge.farmer {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.badge.researcher {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.badge.admin {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.profile-actions {
+  margin-top: 1rem;
+}
+
+.profile-btn {
+  display: inline-block;
+  background: #2e7d32;
+  color: white;
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.profile-btn:hover {
+  background: #1b5e20;
+}
+
+.select {
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  min-width: 210px;
+}
+
+.checkbox-row input {
+  width: 18px;
+  height: 18px;
+  accent-color: #2e7d32;
+}
+
+.save-btn {
+  margin-top: 1rem;
+  width: 100%;
+  background: #2e7d32;
+  color: white;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+
+.save-btn:hover {
+  background: #1b5e20;
+}

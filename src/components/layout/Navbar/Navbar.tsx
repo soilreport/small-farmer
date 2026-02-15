@@ -44,11 +44,23 @@ export default function Navbar() {
         <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
           Dashboard
         </Link>
+
         <Link to="/devices" onClick={() => setMenuOpen(false)}>
           Devices
         </Link>
+
         <Link to="/readings" onClick={() => setMenuOpen(false)}>
           Readings
+        </Link>
+
+        {/* NEW - Profile page link */}
+        <Link to="/profile" onClick={() => setMenuOpen(false)}>
+          Profile
+        </Link>
+
+        {/* NEW - Settings page link */}
+        <Link to="/settings" onClick={() => setMenuOpen(false)}>
+          Settings
         </Link>
 
         {user.role === "researcher" && (

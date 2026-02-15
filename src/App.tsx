@@ -9,6 +9,10 @@ import Readings from "./pages/readings/Readings";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import "./App.css";
 
+//added-real profile pages
+import Profile from "./pages/profile/Profile";
+import Settings from "./pages/profile/Settings";
+
 //changed - add a Research page so navbar link doesnt 404
 function Research() {
   return (
@@ -32,7 +36,12 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/devices" element={<Devices />} />
           <Route path="/readings" element={<Readings />} />
-          <Route path="/profile" element={<div>Profile Page</div>} />
+
+          {/* ADDED - use real profile page instead of placeholder */}
+          <Route path="/profile" element={<Profile />} />
+
+          {/* ADDED - settings page */}
+          <Route path="/settings" element={<Settings />} />
 
           {/* CHANGED */}
           <Route path="/research" element={<Research />} />
