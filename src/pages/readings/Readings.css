@@ -1,0 +1,28 @@
+/* src/pages/readings/Readings.css */
+
+.readings-container {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* main title */
+.readings-container h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* subtitle */
+.readings-container p {
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+/* section title (Charts & Trends) */
+.readings-container h2 {
+  font-size: 1.3rem;
+  margin-top: 1rem;
+  margin-bottom: 0.4rem;
+}
+

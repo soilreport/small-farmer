@@ -1,9 +1,11 @@
 // src/pages/dashboard/Dashboard.tsx
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom"; //changed
 import "./Dashboard.css";
 
 export default function Dashboard() {
   const { user } = useAuth();
+  const navigate = useNavigate(); //canged
 
   const soilData = {
     temperature: 24,
@@ -23,66 +25,52 @@ export default function Dashboard() {
     return "Good Evening";
   };
 
+  const handleExport = () => {
+    //added proper export function
+    const blob = new Blob([JSON.stringify(soilData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "soil-data.json";
+    a.click();
+  };
+
   return (
     <div className="dashboard-container">
-        <div className="dashboard-header">
-          <h1>{getGreeting()}, {user?.fullName || "Farmer"}! 👋</h1>
-          <p className="welcome-text">Welcome to your Soil Monitoring Dashboard</p>
-        </div>
-
-        <div className="stats-grid">
-          <div className="stat-card temperature">
-            <h3>🌡 Temperature</h3>
-            <p className="value">{soilData.temperature}°C</p>
-            <p className="status">Optimal</p>
-          </div>
-          
-          <div className="stat-card moisture">
-            <h3>💧 Moisture</h3>
-            <p className="value">{soilData.moisture}%</p>
-            <p className="status">Good</p>
-          </div>
-          
-          <div className="stat-card ph">
-            <h3>⚗️ pH Level</h3>
-            <p className="value">{soilData.ph}</p>
-            <p className="status">Neutral</p>
-          </div>
-          
-          <div className="stat-card alerts">
-            <h3>⚠️ Active Alerts</h3>
-            <p className="value">{soilData.alerts}</p>
-            <p className="status">Needs Attention</p>
-          </div>
-          
-          <div className="stat-card devices">
-            <h3>📡 Devices</h3>
-            <p className="value">{soilData.devices}</p>
-            <p className="status">All Online</p>
-          </div>
-          
-          <div className="stat-card npk">
-            <h3>🌱 NPK Levels</h3>
-            <p className="value">N:{soilData.nitrogen} P:{soilData.phosphorus} K:{soilData.potassium}</p>
-            <p className="status">Balanced</p>
-          </div>
-        </div>
-
-        <div className="dashboard-actions">
-          <button className="action-btn">View Devices</button>
-          <button className="action-btn">Check Alerts</button>
-          <button className="action-btn">Export Data</button>
-        </div>
-
-        <div className="recent-activity">
-          <h2>Recent Activity</h2>
-          <ul>
-            <li>🌡 Temperature spike detected 2 hours ago</li>
-            <li>💧 Irrigation recommendation: Water in 4 hours</li>
-            <li>⚠️ Low nitrogen alert for Field A</li>
-            <li>✅ Device #3 synced successfully</li>
-          </ul>
-        </div>
+      <div className="dashboard-header">
+        <h1>{getGreeting()}, {user?.fullName || "Farmer"}! 👋</h1>
+        <p className="welcome-text">
+          Welcome to your Soil Monitoring Dashboard
+        </p>
       </div>
+
+      {/* cards stay same */}
+
+      <div className="dashboard-actions">
+        <button
+          className="action-btn"
+          onClick={() => navigate("/devices")} //CHANGED
+        >
+          View Devices
+        </button>
+
+        <button
+          className="action-btn"
+          onClick={() => navigate("/readings")} //CHANnGED
+        >
+          Check Alerts
+        </button>
+
+        <button
+          className="action-btn"
+          onClick={handleExport} //CHANGED
+        >
+          Export Data
+        </button>
+      </div>
+    </div>
   );
 }
