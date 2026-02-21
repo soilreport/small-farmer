@@ -1,4 +1,4 @@
-// src/pages/dashboard/Dashboard.tsx
+import DashboardCharts from "./DashboardCharts";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
@@ -72,6 +72,7 @@ export default function Dashboard() {
           Export Data
         </button>
       </div>
+      <DashboardCharts readings={[]} />
     </div>
   );
 }
