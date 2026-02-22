@@ -14,15 +14,21 @@ import "./App.css";
 import Profile from "./pages/profile/Profile";
 import Settings from "./pages/profile/Settings";
 
+//use real Research page file (instead of placeholder function)
+import Research from "./pages/research/Research";
+
 //changed - add a Research page so navbar link doesnt 404
-function Research() {
-  return (
-    <div>
-      <h1>Research</h1>
-      <p>Research tools coming soon...</p>
-    </div>
-  );
-}
+//we now use the real Research page component from /pages/research
+// (so we don't need the placeholder function anymore)
+
+// function Research() {
+//   return (
+//     <div>
+//       <h1>Research</h1>
+//       <p>Research tools coming soon...</p>
+//     </div>
+//   );
+// }
 
 function App() {
   return (
@@ -46,6 +52,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
 
           {/* CHANGED */}
+          {/* UPDATED: show the real Research page with articles */}
           <Route path="/research" element={<Research />} />
         </Route>
 
