@@ -1,4 +1,3 @@
-import DashboardCharts from "./DashboardCharts";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
@@ -6,17 +5,6 @@ import "./Dashboard.css";
 export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
-
-  const soilData = {
-    temperature: 24,
-    moisture: 53,
-    ph: 6.4,
-    nitrogen: 115,
-    phosphorus: 45,
-    potassium: 210,
-    alerts: 2,
-    devices: 4
-  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -26,11 +14,9 @@ export default function Dashboard() {
   };
 
   const handleExport = () => {
-    const blob = new Blob([JSON.stringify(soilData, null, 2)], {
-      type: "application/json",
-    });
+    const data = { exportedAt: new Date().toISOString(), message: "Export from Small Farmer" };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-
     const a = document.createElement("a");
     a.href = url;
     a.download = "soil-data.json";
@@ -39,40 +25,25 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-header">
-        <h1>{getGreeting()}, {user?.fullName || "Farmer"}! 👋</h1>
-        <p className="welcome-text">
-          Welcome to your Soil Monitoring Dashboard
-        </p>
-      </div>
+      <header className="dashboard-header">
+        <h1>{getGreeting()}, {user?.fullName || "Farmer"}!</h1>
+        <p className="welcome-text">Welcome to Small Farmer</p>
+      </header>
 
-      <div className="dashboard-actions">
-        <button
-          className="action-btn"
-          onClick={() => navigate("/readings")}
-        >
+      <nav className="dashboard-actions">
+        <button className="action-btn" onClick={() => navigate("/readings")}>
           View Readings
         </button>
-        <button
-          className="action-btn"
-          onClick={() => navigate("/devices")}
-        >
+        <button className="action-btn" onClick={() => navigate("/devices")}>
           View Devices
         </button>
-        <button
-          className="action-btn"
-          onClick={() => navigate("/alerts")}
-        >
+        <button className="action-btn" onClick={() => navigate("/alerts")}>
           Check Alerts
         </button>
-        <button
-          className="action-btn"
-          onClick={handleExport}
-        >
+        <button className="action-btn" onClick={handleExport}>
           Export Data
         </button>
-      </div>
-      <DashboardCharts readings={[]} />
+      </nav>
     </div>
   );
 }

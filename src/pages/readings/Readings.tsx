@@ -1,5 +1,6 @@
-// Soil readings: Temperature, Moisture, pH, NPK + Recent Activity
+// Soil readings: Temperature, Moisture, pH, NPK + Charts + Recent Activity
 import "./Readings.css";
+import ReadingsCharts from "./ReadingsCharts";
 
 const soilData = {
   temperature: 24,
@@ -9,6 +10,14 @@ const soilData = {
   phosphorus: 45,
   potassium: 210,
 };
+
+const chartReadings = [
+  { time: "Mon", temperature: 24, moisture: 53, ph: 6.4 },
+  { time: "Tue", temperature: 26, moisture: 48, ph: 6.6 },
+  { time: "Wed", temperature: 25, moisture: 50, ph: 6.5 },
+  { time: "Thu", temperature: 27, moisture: 55, ph: 6.7 },
+  { time: "Fri", temperature: 24, moisture: 52, ph: 6.4 },
+];
 
 export default function Readings() {
   return (
@@ -43,6 +52,8 @@ export default function Readings() {
           <p className="status">Balanced</p>
         </div>
       </div>
+
+      <ReadingsCharts readings={chartReadings} />
 
       <div className="recent-activity">
         <h2>Recent Activity</h2>

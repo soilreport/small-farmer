@@ -91,3 +91,39 @@
   font-size: 0.9rem;
   color: #888;
 }
+
+/* soil alerts with recommendations */
+.alerts-list .alert-item.soil-alert {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  grid-template-columns: unset;
+}
+
+.alerts-list .alert-item.soil-alert .alert-metric {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.alerts-list .alert-item.soil-alert .alert-recommendation {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #444;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+}
+
+.alerts-list .alert-item.soil-alert-warning {
+  border-left-color: #e67700;
+}
+
+.alerts-list .alert-item.soil-alert-danger {
+  border-left-color: #c92a2a;
+  background: #fff5f5;
+}
+
+.no-alerts {
+  color: #666;
+  margin: 0;
+}

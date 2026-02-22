@@ -70,6 +70,51 @@
   display: inline-block;
 }
 
+/* charts (above Recent Activity) */
+.readings-charts {
+  margin-bottom: 2rem;
+}
+
+.readings-charts .charts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.readings-charts .chart-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #eee;
+}
+
+.readings-charts .chart-card h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.readings-charts .chart-wrap {
+  height: 180px;
+  margin-bottom: 0.5rem;
+}
+
+.readings-charts .chart-meta {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .readings-charts .charts-grid {
+    grid-template-columns: 1fr;
+  }
+  .readings-charts .chart-wrap {
+    height: 200px;
+  }
+}
+
 /* recent activity */
 .readings-container .recent-activity {
   background: #f8f9fa;
