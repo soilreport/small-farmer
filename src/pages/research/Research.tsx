@@ -1,6 +1,7 @@
 // src/pages/research/Research.tsx
 
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import "./Research.css";
 import { RESEARCH_DATA } from "./researchData";
 
@@ -38,6 +39,31 @@ export default function Research() {
   return (
     <div className="research-container">
       <h1>Research</h1>
+
+      {/* popular crops in Azerbaijan */}
+      <section className="crop-list-section">
+        <h2 className="crop-list-title">Crops commonly grown in Azerbaijan</h2>
+        <p className="crop-list-text">
+          Click a crop to open a simple page with basic tips on how to grow it.
+        </p>
+        <div className="crop-list-row">
+          <Link to="/crops/wheat" className="crop-pill">
+            Wheat
+          </Link>
+          <Link to="/crops/potato" className="crop-pill">
+            Potato
+          </Link>
+          <Link to="/crops/tomato" className="crop-pill">
+            Tomato
+          </Link>
+          <Link to="/crops/grape" className="crop-pill">
+            Grapes
+          </Link>
+          <Link to="/crops/barley" className="crop-pill">
+            Barley
+          </Link>
+        </div>
+      </section>
 
       {/* search */}
       <input

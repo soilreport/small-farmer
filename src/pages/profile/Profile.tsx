@@ -40,12 +40,7 @@ export default function Profile() {
         </div>
       </div>
 
-      <div className="profile-actions">
-        {/* added- easy navigation to Settings */}
-        <Link className="profile-btn" to="/settings">
-          Open Settings
-        </Link>
-      </div>
+      {/* profile actions intentionally left empty for now */}
     </div>
   );
 }

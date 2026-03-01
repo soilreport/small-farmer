@@ -6,6 +6,37 @@
   border-radius: 12px;
 }
 
+.crop-list-section {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.crop-list-title {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.2rem;
+  color: #1b5e20;
+}
+
+.crop-list-text {
+  margin: 0 0 0.4rem 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.crop-list-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.crop-pill {
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  background: #e0f2f1;
+  color: #00695c;
+  font-size: 0.9rem;
+}
+
 .search-input {
   padding: 0.6rem;
   margin-right: 1rem;

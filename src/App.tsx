@@ -17,6 +17,11 @@ import Settings from "./pages/profile/Settings";
 //use real Research page file (instead of placeholder function)
 import Research from "./pages/research/Research";
 
+// new pages (added without changing existing ones)
+import FarmerTools from "./pages/tools/FarmerTools";
+import Resources from "./pages/info/Resources";
+import CropRegionPage from "./pages/dynamic/CropRegionPage";
+
 //changed - add a Research page so navbar link doesnt 404
 //we now use the real Research page component from /pages/research
 // (so we don't need the placeholder function anymore)
@@ -54,6 +59,17 @@ function App() {
           {/* CHANGED */}
           {/* UPDATED: show the real Research page with articles */}
           <Route path="/research" element={<Research />} />
+
+          {/* NEW: farmer tools (weather + yield calculator) */}
+          <Route path="/tools" element={<FarmerTools />} />
+
+          {/* NEW: information pages */}
+          <Route path="/resources" element={<Resources />} />
+
+          {/* NEW: dynamic crop / region routing examples */}
+          <Route path="/crops/:cropId" element={<CropRegionPage />} />
+          <Route path="/regions/:regionId" element={<CropRegionPage />} />
+          <Route path="/regions/:regionId/crops/:cropId" element={<CropRegionPage />} />
         </Route>
 
         {/* redirect root to dashboard (ProtectedRoute will send to login if not authed) */}

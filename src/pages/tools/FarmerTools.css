@@ -1,0 +1,231 @@
+.tools-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tools-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f5fbe7, #e0f7fa);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tools-title-block h1 {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.8rem;
+  color: #1b5e20;
+}
+
+.tools-subtitle {
+  margin: 0;
+  color: #35524a;
+  max-width: 540px;
+  line-height: 1.4;
+}
+
+.tools-hero-illustration {
+  min-width: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  font-size: 1.8rem;
+}
+
+.tools-hero-sun {
+  filter: drop-shadow(0 0 6px rgba(255, 193, 7, 0.8));
+}
+
+.tools-hero-cloud {
+  transform: translateY(4px);
+}
+
+.tools-hero-field {
+  transform: translateY(2px);
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.tool-card {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tool-card h2 {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.3rem;
+  color: #1b5e20;
+}
+
+.tool-description {
+  margin: 0 0 1rem 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.weather-card {
+  background: radial-gradient(circle at top left, #e3f2fd, #ffffff);
+}
+
+.yield-card {
+  background: radial-gradient(circle at top right, #fef7e0, #ffffff);
+}
+
+.weather-select-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.9rem;
+}
+
+.weather-select-row label {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.weather-select-row select {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #b0bec5;
+  font-size: 0.9rem;
+}
+
+.weather-summary {
+  margin-top: 0.5rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.weather-main {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.4rem;
+}
+
+.weather-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.weather-temp {
+  margin: 0.1rem 0 0 0;
+  font-weight: 600;
+  color: #1565c0;
+}
+
+.weather-text {
+  margin: 0 0 0.1rem 0;
+  font-size: 0.9rem;
+  color: #455a64;
+}
+
+.weather-rain {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #2e7d32;
+}
+
+.tool-note {
+  margin-top: 0.8rem;
+  font-size: 0.8rem;
+  color: #607d8b;
+}
+
+.yield-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.yield-row {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.yield-field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.yield-field label {
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.yield-field input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid #c0ca33;
+  font-size: 0.9rem;
+}
+
+.yield-results {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.yield-result-pill {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0.5rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pill-label {
+  font-size: 0.8rem;
+  color: #607d8b;
+}
+
+.pill-value {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1b5e20;
+}
+
+.pill-currency {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .tools-header {
+    flex-direction: column;
+  }
+
+  .tools-title-block h1 {
+    font-size: 1.5rem;
+  }
+}
+

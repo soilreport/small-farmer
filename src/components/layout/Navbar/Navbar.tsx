@@ -41,7 +41,11 @@ export default function Navbar() {
           Welcome, {user.fullName} ({user.role})
         </span>
 
-        {/* ONLY keep profile & settings in new design */}
+        {/* main navigation links */}
+
+        <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
+          Dashboard
+        </Link>
 
         <Link to="/profile" onClick={() => setMenuOpen(false)}>
           Profile

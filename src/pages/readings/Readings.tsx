@@ -1,6 +1,7 @@
 // src/pages/readings/Readings.tsx
-//soil readings: Temperature, Moisture, pH, NPK + Charts + Recent Activity
+//soil readings: Temperature, Moisture, pH, NPK + Charts + Recent Activity + FAQ
 
+import { useState } from "react";
 import "./Readings.css";
 import ReadingsCharts from "./ReadingsCharts";
 import { useSoilInsights } from "../../context/SoilInsightsContext";
@@ -11,6 +12,31 @@ import { useSoilInsights } from "../../context/SoilInsightsContext";
  */
 export default function Readings() {
   const { readings, setReadings, insights } = useSoilInsights();
+
+  const FAQ_ITEMS = [
+    {
+      question: "What does Small Farmer help me with?",
+      answer:
+        "Small Farmer helps you keep an eye on soil conditions (temperature, moisture, pH) and see alerts and recommendations based on your readings.",
+    },
+    {
+      question: "Are the charts and tools using real sensor data?",
+      answer:
+        "Right now the dashboard uses mock data that behaves like real sensor readings. Later, this can be connected to actual devices in the field.",
+    },
+    {
+      question: "Can I use these tools for different fields?",
+      answer:
+        "Yes. The readings and alerts are generic and can be used for many crops and plots. In the future you can extend this with multiple fields and devices.",
+    },
+    {
+      question: "Does this replace advice from an agronomist?",
+      answer:
+        "No. The application is meant as a helper. For critical decisions, always confirm with local agronomists or official extension services.",
+    },
+  ];
+
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
   //chart demo (still mock)
   const chartReadings = [
@@ -150,6 +176,35 @@ export default function Readings() {
           )}
         </ul>
       </div>
+
+      {/* FAQ section (moved here instead of a separate page) */}
+      <section className="readings-faq">
+        <h2>Frequently asked questions</h2>
+        <p className="readings-faq-intro">
+          Short answers about how the Soil Readings, Alerts and tools work in this app.
+        </p>
+        <div className="readings-faq-list">
+          {FAQ_ITEMS.map((item, index) => {
+            const isOpen = openFaqIndex === index;
+            return (
+              <button
+                key={item.question}
+                type="button"
+                className={`readings-faq-item ${isOpen ? "open" : ""}`}
+                onClick={() =>
+                  setOpenFaqIndex((prev) => (prev === index ? null : index))
+                }
+              >
+                <div className="readings-faq-question-row">
+                  <span className="readings-faq-question">{item.question}</span>
+                  <span className="readings-faq-toggle">{isOpen ? "−" : "+"}</span>
+                </div>
+                {isOpen && <p className="readings-faq-answer">{item.answer}</p>}
+              </button>
+            );
+          })}
+        </div>
+      </section>
     </div>
   );
 }
