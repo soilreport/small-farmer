@@ -15,9 +15,7 @@ export default function Navbar() {
     navigate("/login");
   };
 
-  // changed- if not logged in, dontt show navbar links/buttons
-  //(ProtectedRoute already ensures navbar only appears when logged in,
-  //but this makes it extra safe + prevents edge cases)
+  // changed- if not logged in, dont show navbar
   if (!user) return null;
 
   return (
@@ -37,43 +35,23 @@ export default function Navbar() {
 
       {/* changed -responsive menu (collapses on mobile) */}
       <div className={`nav-links ${menuOpen ? "open" : ""}`}>
+        
+        {/* user greeting */}
         <span className="welcome">
           Welcome, {user.fullName} ({user.role})
         </span>
 
-        <Link to="/dashboard" onClick={() => setMenuOpen(false)}>
-          Dashboard
-        </Link>
+        {/* ONLY keep profile & settings in new design */}
 
-        <Link to="/devices" onClick={() => setMenuOpen(false)}>
-          Devices
-        </Link>
-
-        <Link to="/readings" onClick={() => setMenuOpen(false)}>
-          Readings
-        </Link>
-
-        <Link to="/alerts" onClick={() => setMenuOpen(false)}>
-          Alerts
-        </Link>
-
-        {/* NEW - Profile page link */}
         <Link to="/profile" onClick={() => setMenuOpen(false)}>
           Profile
         </Link>
 
-        {/* NEW - Settings page link */}
         <Link to="/settings" onClick={() => setMenuOpen(false)}>
           Settings
         </Link>
 
-        {user.role === "researcher" && (
-          <Link to="/research" onClick={() => setMenuOpen(false)}>
-            Research
-          </Link>
-        )}
-
-        {/*changed-logout button only when user exists (it does) */}
+        {/*changed-logout button */}
         <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
