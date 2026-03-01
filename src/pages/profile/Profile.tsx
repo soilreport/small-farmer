@@ -1,7 +1,6 @@
 // src/pages/profile/Profile.tsx
 import { useAuth } from "../../context/AuthContext";
-import { Link } from "react-router-dom";
-import "./Profile.css"; // added- page styling
+import "./Profile.css";
 
 export default function Profile() {
   const { user } = useAuth();
