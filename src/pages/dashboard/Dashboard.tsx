@@ -12,7 +12,7 @@ export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // dynamic greeting based on time
+  // Dynamic greeting based on time
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return "Good Morning";
@@ -20,28 +20,38 @@ export default function Dashboard() {
     return "Good Evening";
   };
 
-  // card navigation handler
+  // Card navigation handler
   const go = (path: string) => navigate(path);
 
-  const roleLabel = user?.role === "researcher" ? "Researcher" : "Farmer";
+  // Role label for fallback/demo users
+  const roleLabel = user?.role === "researcher" ? "researcher" : "farmer";
+
+  // Show role label for demo names like "farmer" / "research"
+  // Otherwise show the user's real full name
+  const displayName =
+    !user?.fullName ||
+    user.fullName.trim().toLowerCase() === "farmer" ||
+    user.fullName.trim().toLowerCase() === "research"
+      ? roleLabel
+      : user.fullName.trim();
 
   return (
     <div className="dashboard-container">
-      {/*  HERO IMAGE WITH GREETING */}
+      {/* HERO IMAGE WITH GREETING */}
       <div
         className="dashboard-hero"
         style={{ backgroundImage: `url(${heroImg})` }}
       >
         <div className="hero-overlay">
           <h1>
-            {getGreeting()}, {roleLabel}! {user?.fullName ? ` ${user.fullName}!` : ""}
+            {getGreeting()}, {displayName}!
           </h1>
 
           <p>Welcome to Small Farmer 🌱</p>
         </div>
       </div>
 
-      {/*  NAVIGATION CARDS */}
+      {/* NAVIGATION CARDS */}
       <div className="dashboard-cards">
         <div
           className="dashboard-card"

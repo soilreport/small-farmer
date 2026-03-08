@@ -1,3 +1,5 @@
+// src/pages/readings/ReadingsCharts.tsx
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,10 +31,18 @@ ChartJS.register(
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
-  plugins: { legend: { display: false } },
+  plugins: {
+    legend: { display: false },
+  },
   scales: {
-    x: { grid: { display: false }, ticks: { maxRotation: 0, font: { size: 11 } } },
-    y: { grid: { color: "rgba(0,0,0,0.06)" }, ticks: { font: { size: 11 } } },
+    x: {
+      grid: { display: false },
+      ticks: { maxRotation: 0, font: { size: 11 } },
+    },
+    y: {
+      grid: { color: "rgba(0,0,0,0.06)" },
+      ticks: { font: { size: 11 } },
+    },
   },
 };
 
@@ -48,43 +58,55 @@ interface ReadingsChartsProps {
   readings?: SoilReading[] | null;
 }
 
+function getRangeText(metric: keyof typeof SOIL_RANGES): string {
+  const range = SOIL_RANGES[metric];
+  const unit = range.unit ?? "";
+  return `Optimal: ${range.min}–${range.max}${unit}`;
+}
+
 export default function ReadingsCharts({ readings }: ReadingsChartsProps) {
   const data = readings?.length ? readings : defaultReadings;
-  const labels = data.map((r) => r.time);
+  const labels = data.map((reading) => reading.time);
 
-  const tempData = {
+  const temperatureData = {
     labels,
-    datasets: [{
-      label: "Temperature (°C)",
-      data: data.map((r) => r.temperature),
-      borderColor: "#e07c54",
-      backgroundColor: "rgba(224, 124, 84, 0.15)",
-      fill: true,
-      tension: 0.3,
-    }],
+    datasets: [
+      {
+        label: "Temperature (°C)",
+        data: data.map((reading) => reading.temperature),
+        borderColor: "#e07c54",
+        backgroundColor: "rgba(224, 124, 84, 0.15)",
+        fill: true,
+        tension: 0.3,
+      },
+    ],
   };
 
   const moistureData = {
     labels,
-    datasets: [{
-      label: "Moisture (%)",
-      data: data.map((r) => r.moisture),
-      borderColor: "#5b8def",
-      backgroundColor: "rgba(91, 141, 239, 0.15)",
-      fill: true,
-      tension: 0.3,
-    }],
+    datasets: [
+      {
+        label: "Moisture (%)",
+        data: data.map((reading) => reading.moisture),
+        borderColor: "#5b8def",
+        backgroundColor: "rgba(91, 141, 239, 0.15)",
+        fill: true,
+        tension: 0.3,
+      },
+    ],
   };
 
   const phData = {
     labels,
-    datasets: [{
-      label: "pH",
-      data: data.map((r) => r.ph),
-      backgroundColor: "rgba(94, 163, 94, 0.7)",
-      borderColor: "#5ea35e",
-      borderWidth: 1,
-    }],
+    datasets: [
+      {
+        label: "pH",
+        data: data.map((reading) => reading.ph),
+        backgroundColor: "rgba(94, 163, 94, 0.7)",
+        borderColor: "#5ea35e",
+        borderWidth: 1,
+      },
+    ],
   };
 
   return (
@@ -93,23 +115,25 @@ export default function ReadingsCharts({ readings }: ReadingsChartsProps) {
         <div className="chart-card chart-temperature">
           <h3>Temperature</h3>
           <div className="chart-wrap">
-            <Line data={tempData} options={chartOptions} />
+            <Line data={temperatureData} options={chartOptions} />
           </div>
-          <p className="chart-meta">Optimal: {SOIL_RANGES.temperature.min}–{SOIL_RANGES.temperature.max}{SOIL_RANGES.temperature.unit}</p>
+          <p className="chart-meta">{getRangeText("temperature")}</p>
         </div>
+
         <div className="chart-card chart-moisture">
           <h3>Moisture</h3>
           <div className="chart-wrap">
             <Line data={moistureData} options={chartOptions} />
           </div>
-          <p className="chart-meta">Optimal: {SOIL_RANGES.moisture.min}–{SOIL_RANGES.moisture.max}{SOIL_RANGES.moisture.unit}</p>
+          <p className="chart-meta">{getRangeText("moisture")}</p>
         </div>
+
         <div className="chart-card chart-ph">
           <h3>pH</h3>
           <div className="chart-wrap">
             <Bar data={phData} options={chartOptions} />
           </div>
-          <p className="chart-meta">Optimal: {SOIL_RANGES.ph.min}–{SOIL_RANGES.ph.max}</p>
+          <p className="chart-meta">{getRangeText("ph")}</p>
         </div>
       </div>
     </div>

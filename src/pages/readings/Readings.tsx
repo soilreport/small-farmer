@@ -1,14 +1,17 @@
 // src/pages/readings/Readings.tsx
-//soil readings: Temperature, Moisture, pH, NPK + Charts + Recent Activity + FAQ
+// Soil readings: Temperature, Moisture, pH, NPK + Charts + Recent Activity + FAQ
 
 import { useState } from "react";
 import "./Readings.css";
 import ReadingsCharts from "./ReadingsCharts";
 import { useSoilInsights } from "../../context/SoilInsightsContext";
+import type { SoilMetric } from "../research/researchData";
+import { formatMetricValue } from "../../utils/formatters";
+import { DEFAULT_NO_DATA_TEXT } from "../../utils/constants";
 
 /**
- * Readings page now updates the global context
- *changing values here updates Alerts + Research pages automatically
+ * Readings page updates the global soil insights context.
+ * Changing values here updates Alerts + Research pages automatically.
  */
 export default function Readings() {
   const { readings, setReadings, insights } = useSoilInsights();
@@ -38,7 +41,7 @@ export default function Readings() {
 
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
 
-  //chart demo (still mock)
+  // chart demo data (still mock)
   const chartReadings = [
     { time: "Mon", temperature: 24, moisture: 53, ph: 6.4 },
     { time: "Tue", temperature: 26, moisture: 48, ph: 6.6 },
@@ -47,8 +50,11 @@ export default function Readings() {
     { time: "Fri", temperature: 24, moisture: 52, ph: 6.4 },
   ];
 
-  //helper: check if there is an alert for a metric
-  const hasAlert = (metric: string) => insights.alerts.some((a) => a.metric === metric);
+  const hasAlert = (metric: SoilMetric) =>
+    insights.alerts.some((alert) => alert.metric === metric);
+
+  const formatNpkValue = (value?: number) =>
+    value == null ? DEFAULT_NO_DATA_TEXT : String(value);
 
   return (
     <div className="readings-container">
@@ -73,11 +79,12 @@ export default function Readings() {
             Temperature (°C)
             <input
               type="number"
-              value={readings.temperature ?? 0}
+              value={readings.temperature ?? ""}
               onChange={(e) =>
                 setReadings((prev) => ({
                   ...prev,
-                  temperature: Number(e.target.value),
+                  temperature:
+                    e.target.value === "" ? undefined : Number(e.target.value),
                 }))
               }
             />
@@ -87,11 +94,12 @@ export default function Readings() {
             Moisture (%)
             <input
               type="number"
-              value={readings.moisture ?? 0}
+              value={readings.moisture ?? ""}
               onChange={(e) =>
                 setReadings((prev) => ({
                   ...prev,
-                  moisture: Number(e.target.value),
+                  moisture:
+                    e.target.value === "" ? undefined : Number(e.target.value),
                 }))
               }
             />
@@ -102,11 +110,11 @@ export default function Readings() {
             <input
               type="number"
               step="0.1"
-              value={readings.ph ?? 0}
+              value={readings.ph ?? ""}
               onChange={(e) =>
                 setReadings((prev) => ({
                   ...prev,
-                  ph: Number(e.target.value),
+                  ph: e.target.value === "" ? undefined : Number(e.target.value),
                 }))
               }
             />
@@ -117,11 +125,11 @@ export default function Readings() {
             <input
               type="number"
               step="0.1"
-              value={readings.ec ?? 0}
+              value={readings.ec ?? ""}
               onChange={(e) =>
                 setReadings((prev) => ({
                   ...prev,
-                  ec: Number(e.target.value),
+                  ec: e.target.value === "" ? undefined : Number(e.target.value),
                 }))
               }
             />
@@ -133,26 +141,32 @@ export default function Readings() {
       <div className="stats-grid">
         <div className="stat-card temperature">
           <h3>🌡 Temperature</h3>
-          <p className="value">{readings.temperature}°C</p>
+          <p className="value">
+            {formatMetricValue("temperature", readings.temperature)}
+          </p>
           <p className="status">{hasAlert("temperature") ? "Alert" : "OK"}</p>
         </div>
 
         <div className="stat-card moisture">
           <h3>💧 Moisture</h3>
-          <p className="value">{readings.moisture}%</p>
+          <p className="value">
+            {formatMetricValue("moisture", readings.moisture)}
+          </p>
           <p className="status">{hasAlert("moisture") ? "Alert" : "OK"}</p>
         </div>
 
         <div className="stat-card ph">
           <h3>⚗️ pH Level</h3>
-          <p className="value">{readings.ph}</p>
+          <p className="value">{formatMetricValue("ph", readings.ph)}</p>
           <p className="status">{hasAlert("ph") ? "Alert" : "OK"}</p>
         </div>
 
         <div className="stat-card npk">
           <h3>🌱 NPK Levels</h3>
           <p className="value">
-            N:{readings.nitrogen} P:{readings.phosphorus} K:{readings.potassium}
+            N: {formatNpkValue(readings.nitrogen)} P:{" "}
+            {formatNpkValue(readings.phosphorus)} K:{" "}
+            {formatNpkValue(readings.potassium)}
           </p>
           <p className="status">Info</p>
         </div>
@@ -161,23 +175,24 @@ export default function Readings() {
       {/* Charts */}
       <ReadingsCharts readings={chartReadings} />
 
-      {/* Recent asctivity now uses real computed alerts */}
+      {/* Recent activity uses real computed alerts */}
       <div className="recent-activity">
         <h2>Recent Activity</h2>
         <ul>
           {insights.alerts.length === 0 ? (
             <li>✅ No active alerts right now</li>
           ) : (
-            insights.alerts.slice(0, 4).map((a) => (
-              <li key={a.id}>
-                ⚠️ {a.title} (value: {a.value}) — source: Article {a.sourceArticleId}
+            insights.alerts.slice(0, 4).map((alert) => (
+              <li key={alert.id}>
+                ⚠️ {alert.title} (value: {alert.value}) — source:{" "}
+                {alert.sourceArticleTitle}
               </li>
             ))
           )}
         </ul>
       </div>
 
-      {/* FAQ section (moved here instead of a separate page) */}
+      {/* FAQ section */}
       <section className="readings-faq">
         <h2>Frequently asked questions</h2>
         <p className="readings-faq-intro">

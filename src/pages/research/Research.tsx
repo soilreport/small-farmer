@@ -4,43 +4,42 @@ import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Research.css";
 import { RESEARCH_DATA } from "./researchData";
-
-//get computed alerts/recommendations from global context
 import { useSoilInsights } from "../../context/SoilInsightsContext";
 import type { SoilAlert } from "../../utils/evaluateInsights";
+import { includesText } from "../../utils/helpers";
+import { formatMetricValue } from "../../utils/formatters";
+import { METRIC_LABELS } from "../../utils/constants";
+import type { SoilMetric } from "./researchData";
 
 export default function Research() {
-  //search input
   const [search, setSearch] = useState("");
-
-  // selected tag
   const [selectedTag, setSelectedTag] = useState("all");
 
-  //pull insights from context (generated from sensor readings + research rules)
   const { insights } = useSoilInsights();
 
-  //collect all tags for dropdown
   const tags = useMemo(() => {
-    const all = RESEARCH_DATA.flatMap((a) => a.tags);
-    return ["all", ...Array.from(new Set(all))];
+    const allTags = RESEARCH_DATA.flatMap((article) => article.tags);
+    return ["all", ...Array.from(new Set(allTags))];
   }, []);
 
-  //filter logic
-  const filtered = RESEARCH_DATA.filter((article) => {
-    const matchSearch =
-      article.title.toLowerCase().includes(search.toLowerCase()) ||
-      article.summary.toLowerCase().includes(search.toLowerCase());
+  const filtered = useMemo(() => {
+    return RESEARCH_DATA.filter((article) => {
+      const matchSearch =
+        includesText(article.title, search) ||
+        includesText(article.summary, search);
 
-    const matchTag = selectedTag === "all" || article.tags.includes(selectedTag);
+      const matchTag =
+        selectedTag === "all" || article.tags.includes(selectedTag);
 
-    return matchSearch && matchTag;
-  });
+      return matchSearch && matchTag;
+    });
+  }, [search, selectedTag]);
 
   return (
     <div className="research-container">
       <h1>Research</h1>
 
-      {/* popular crops in Azerbaijan */}
+      {/* Popular crops in Azerbaijan */}
       <section className="crop-list-section">
         <h2 className="crop-list-title">Crops commonly grown in Azerbaijan</h2>
         <p className="crop-list-text">
@@ -65,7 +64,6 @@ export default function Research() {
         </div>
       </section>
 
-      {/* search */}
       <input
         className="search-input"
         placeholder="Search title or summary..."
@@ -73,18 +71,18 @@ export default function Research() {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* tag filter */}
-      <select value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)}>
+      <select
+        value={selectedTag}
+        onChange={(e) => setSelectedTag(e.target.value)}
+      >
         {tags.map((tag) => (
-          <option key={tag}>{tag}</option>
+          <option key={tag} value={tag}>
+            {tag}
+          </option>
         ))}
       </select>
 
-      {/* article cards */}
       {filtered.map((article) => {
-        // per-article insight bucket
-        // alerts: triggered by comparing sensor readings to article rules
-        // recommendations: static + sensor-based (unique)
         const articleInsights = insights.byArticle[article.id];
         const alerts = articleInsights?.alerts ?? [];
         const recommendations = articleInsights?.recommendations ?? [];
@@ -112,9 +110,6 @@ export default function Research() {
               ))}
             </div>
 
-          
-            {/* Alerts / Findings  */}
-          
             <div style={{ marginTop: 14 }}>
               <h3 style={{ marginBottom: 6 }}>Alerts / Findings</h3>
 
@@ -124,18 +119,13 @@ export default function Research() {
                 </p>
               ) : (
                 <ul style={{ paddingLeft: 18, margin: 0 }}>
-                  {alerts.map((a) => (
-                    <ResearchAlertLine key={a.id} alert={a} />
+                  {alerts.map((alert) => (
+                    <ResearchAlertLine key={alert.id} alert={alert} />
                   ))}
                 </ul>
               )}
             </div>
 
-          
-            {/*  Recommendations    */}
-            {/* - includes static recommendations always */}
-            {/* - plus sensor-triggered ones */}
-          
             <div style={{ marginTop: 12 }}>
               <h3 style={{ marginBottom: 6 }}>Recommendations</h3>
 
@@ -143,8 +133,10 @@ export default function Research() {
                 <p style={{ opacity: 0.8 }}>No recommendations available.</p>
               ) : (
                 <ul style={{ paddingLeft: 18, margin: 0 }}>
-                  {recommendations.map((rec, idx) => (
-                    <li key={`${article.id}-rec-${idx}`}>{rec}</li>
+                  {recommendations.map((recommendation, index) => (
+                    <li key={`${article.id}-rec-${index}`}>
+                      {recommendation}
+                    </li>
                   ))}
                 </ul>
               )}
@@ -157,29 +149,31 @@ export default function Research() {
 }
 
 /**
- * small helper component for an alert line
+ * Small helper component for an alert line
  * keeps Research.tsx cleaner and consistent.
  */
 function ResearchAlertLine({ alert }: { alert: SoilAlert }) {
-  //icon based on severity
-  const icon = alert.severity === "critical" ? "🟥" : alert.severity === "warning" ? "🟧" : "🟦";
+  const icon =
+    alert.severity === "critical"
+      ? "🟥"
+      : alert.severity === "warning"
+        ? "🟧"
+        : "🟦";
 
-  //readable metric label
-  const metricLabel =
-    alert.metric === "temperature"
-      ? "Temperature"
-      : alert.metric === "moisture"
-        ? "Moisture"
-        : alert.metric === "ph"
-          ? "pH"
-          : alert.metric === "ec"
-            ? "EC (Salinity)"
-            : String(alert.metric).toUpperCase();
+  const metricLabel = getMetricDisplayLabel(alert.metric);
+  const metricValue = formatMetricValue(alert.metric, alert.value);
 
   return (
     <li>
-      {icon} <b>{alert.title}</b> — {metricLabel}: {alert.value}
-      {alert.recommendation ? <span style={{ opacity: 0.85 }}> · {alert.recommendation}</span> : null}
+      {icon} <b>{alert.title}</b> — {metricLabel}: {metricValue}
+      {alert.recommendation ? (
+        <span style={{ opacity: 0.85 }}> · {alert.recommendation}</span>
+      ) : null}
     </li>
   );
+}
+
+function getMetricDisplayLabel(metric: SoilMetric): string {
+  if (metric === "ec") return "EC (Salinity)";
+  return METRIC_LABELS[metric] ?? metric.toUpperCase();
 }

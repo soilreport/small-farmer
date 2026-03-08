@@ -1,46 +1,109 @@
 // src/pages/auth/Register.tsx
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext"; //CHANGED
+import { useAuth } from "../../context/AuthContext";
+import { validateRequired } from "../../utils/validators";
 import "./Auth.css";
 
 export default function Register() {
   const navigate = useNavigate();
-
-  //changed  use register from context (and not just navigate)
   const { register } = useAuth();
 
   const [form, setForm] = useState({
     fullName: "",
     email: "",
     password: "",
-    role: "farmer" as const, //changed "user" -> "farmer" to match app roles
+    role: "farmer" as "farmer" | "researcher",
   });
 
-  // changed = add UX like Login (loading + error)
+  const [errors, setErrors] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-    if (apiError) setApiError(""); //changed =clear error when typing
+  const validateForm = () => {
+    const newErrors = {
+      fullName: "",
+      email: "",
+      password: "",
+    };
+
+    let isValid = true;
+
+    const fullName = form.fullName.trim();
+    const email = form.email.trim();
+    const password = form.password;
+
+    const nameRequired = validateRequired(fullName, "Full name");
+    if (!nameRequired.valid) {
+      newErrors.fullName = nameRequired.message || "Full name is required";
+      isValid = false;
+    }
+
+    const emailRequired = validateRequired(email, "Email");
+    if (!emailRequired.valid) {
+      newErrors.email = emailRequired.message || "Email is required";
+      isValid = false;
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Email is invalid";
+      isValid = false;
+    }
+
+    const passwordRequired = validateRequired(password, "Password");
+    if (!passwordRequired.valid) {
+      newErrors.password = passwordRequired.message || "Password is required";
+      isValid = false;
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    if (name in errors && errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+
+    if (apiError) {
+      setApiError("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setApiError("");
+
+    if (!validateForm()) return;
+
     setLoading(true);
 
     try {
-      //changed; call real register() which stores fullName + role + email
       await register({
-        fullName: form.fullName,
-        email: form.email,
+        fullName: form.fullName.trim(),
+        email: form.email.trim(),
         password: form.password,
         role: form.role,
       });
 
-      // changed-after register go to dashboard (ProtectedRoute will allow)
       navigate("/dashboard");
     } catch (err) {
       console.error("Register error:", err);
@@ -58,7 +121,6 @@ export default function Register() {
           <p className="auth-subtitle">Join the Soil Monitoring Platform</p>
         </div>
 
-        {/*changed -show error box same style as Login */}
         {apiError && (
           <div className="api-error">
             <span className="error-icon">⚠️</span>
@@ -72,11 +134,15 @@ export default function Register() {
             id="fullName"
             name="fullName"
             placeholder="Your full name"
-            value={form.fullName} //changed - controlled input
+            value={form.fullName}
             onChange={handleChange}
-            required
             disabled={loading}
+            autoComplete="name"
+            className={errors.fullName ? "error" : ""}
           />
+          {errors.fullName && (
+            <span className="error-text">{errors.fullName}</span>
+          )}
         </div>
 
         <div className="input-group">
@@ -86,12 +152,13 @@ export default function Register() {
             name="email"
             type="email"
             placeholder="Enter your email"
-            value={form.email} //changed -controlled input
+            value={form.email}
             onChange={handleChange}
-            required
             disabled={loading}
             autoComplete="email"
+            className={errors.email ? "error" : ""}
           />
+          {errors.email && <span className="error-text">{errors.email}</span>}
         </div>
 
         <div className="input-group">
@@ -101,12 +168,15 @@ export default function Register() {
             name="password"
             type="password"
             placeholder="Create a password (min 6 chars)"
-            value={form.password} // changed - controlled input
+            value={form.password}
             onChange={handleChange}
-            required
             disabled={loading}
             autoComplete="new-password"
+            className={errors.password ? "error" : ""}
           />
+          {errors.password && (
+            <span className="error-text">{errors.password}</span>
+          )}
         </div>
 
         <div className="input-group">
@@ -114,17 +184,15 @@ export default function Register() {
           <select
             id="role"
             name="role"
-            value={form.role} // changed- controlled select
+            value={form.role}
             onChange={handleChange}
             disabled={loading}
           >
-            {/*changed- correct role names */}
             <option value="farmer">Farmer</option>
             <option value="researcher">Researcher</option>
           </select>
         </div>
 
-        {/* changed - styled button like Login */}
         <button type="submit" className="auth-button" disabled={loading}>
           {loading ? (
             <span className="loading-spinner">

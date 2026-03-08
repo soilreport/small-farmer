@@ -2,41 +2,51 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { validateRequired } from "../../utils/validators";
 import "./Auth.css";
 
 export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  
-  const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
 
   const validateForm = () => {
     const newErrors = { email: "", password: "" };
     let isValid = true;
-    
-    if (!formData.email) {
-      newErrors.email = "Email is required";
+
+    const email = formData.email.trim();
+    const password = formData.password;
+
+    const emailRequired = validateRequired(email, "Email");
+    if (!emailRequired.valid) {
+      newErrors.email = emailRequired.message || "Email is required";
       isValid = false;
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = "Email is invalid";
       isValid = false;
     }
-    
-    if (!formData.password) {
-      newErrors.password = "Password is required";
+
+    const passwordRequired = validateRequired(password, "Password");
+    if (!passwordRequired.valid) {
+      newErrors.password = passwordRequired.message || "Password is required";
       isValid = false;
-    } else if (formData.password.length < 6) {
+    } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
       isValid = false;
     }
-    
+
     setErrors(newErrors);
     return isValid;
   };
@@ -44,15 +54,13 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setApiError("");
-    
-    if (!validateForm()) {
-      return;
-    }
-    
+
+    if (!validateForm()) return;
+
     setLoading(true);
-    
+
     try {
-      await login(formData.email, formData.password);
+      await login(formData.email.trim(), formData.password);
       navigate("/dashboard");
     } catch (error) {
       console.error("Login error:", error);
@@ -68,38 +76,53 @@ export default function Login() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
-    
+    }));
+
     if (errors[name as keyof typeof errors]) {
-      setErrors({
-        ...errors,
+      setErrors((prev) => ({
+        ...prev,
         [name]: "",
-      });
+      }));
     }
-    
+
     if (apiError) {
       setApiError("");
     }
   };
 
-  const handleDemoLogin = async (role: 'farmer' | 'researcher') => {
+  const handleDemoLogin = async (role: "farmer" | "researcher") => {
     setLoading(true);
     setApiError("");
-    
+
     const demoCredentials = {
-      farmer: { email: "farmer@soil.com", password: "demo123" },
-      researcher: { email: "research@soil.com", password: "demo123" }
+      farmer: {
+        email: "farmer@soil.com",
+        password: "demo123",
+        fullName: "farmer",
+        role: "farmer" as const,
+      },
+      researcher: {
+        email: "research@soil.com",
+        password: "demo123",
+        fullName: "research",
+        role: "researcher" as const,
+      },
     };
-    
+
     try {
-      await login(demoCredentials[role].email, demoCredentials[role].password);
+      const demo = demoCredentials[role];
+      await login(demo.email, demo.password, {
+        fullName: demo.fullName,
+        role: demo.role,
+      });
       navigate("/dashboard");
     } catch (error) {
-      setApiError("Demo login failed. Please try again.");
       console.error("Demo login error:", error);
+      setApiError("Demo login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -139,9 +162,6 @@ export default function Login() {
         <div className="input-group">
           <div className="password-label-row">
             <label htmlFor="password">Password</label>
-            <Link to="/forgot-password" className="forgot-password">
-              Forgot password?
-            </Link>
           </div>
           <input
             id="password"
@@ -154,7 +174,9 @@ export default function Login() {
             disabled={loading}
             autoComplete="current-password"
           />
-          {errors.password && <span className="error-text">{errors.password}</span>}
+          {errors.password && (
+            <span className="error-text">{errors.password}</span>
+          )}
         </div>
 
         <div className="remember-me">
@@ -162,11 +184,7 @@ export default function Login() {
           <label htmlFor="remember">Remember me</label>
         </div>
 
-        <button 
-          type="submit" 
-          className="auth-button"
-          disabled={loading}
-        >
+        <button type="submit" className="auth-button" disabled={loading}>
           {loading ? (
             <span className="loading-spinner">
               <span className="spinner"></span> Logging in...
@@ -179,18 +197,18 @@ export default function Login() {
         <div className="demo-login-section">
           <p className="demo-label">Quick Demo:</p>
           <div className="demo-buttons">
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="demo-button farmer"
-              onClick={() => handleDemoLogin('farmer')}
+              onClick={() => handleDemoLogin("farmer")}
               disabled={loading}
             >
               Login as Farmer
             </button>
-            <button 
-              type="button" 
+            <button
+              type="button"
               className="demo-button researcher"
-              onClick={() => handleDemoLogin('researcher')}
+              onClick={() => handleDemoLogin("researcher")}
               disabled={loading}
             >
               Login as Researcher
@@ -204,15 +222,16 @@ export default function Login() {
 
         <div className="auth-footer">
           <p>
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/register" className="auth-link">
               Create one here
             </Link>
           </p>
-          
+
           <div className="context-info">
             <small>
-              This platform is designed for Azerbaijani farmers and researchers to monitor soil health.
+              This platform is designed for Azerbaijani farmers and researchers
+              to monitor soil health.
             </small>
           </div>
         </div>
