@@ -60,4 +60,10 @@ function App() {
   );
 }
 
+import { DeviceProvider } from "./context/DeviceContext";
+
+<DeviceProvider>
+  <App />
+</DeviceProvider>;
+
 export default App;

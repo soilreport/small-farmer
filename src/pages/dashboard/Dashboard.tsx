@@ -7,6 +7,7 @@ import devicesImg from "../../assets/devices.png";
 import readingsImg from "../../assets/readings.png";
 import alertsImg from "../../assets/alerts.png";
 import researchImg from "../../assets/research.png";
+import AnimatedCard from "../../components/AnimatedCard";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -53,6 +54,7 @@ export default function Dashboard() {
 
       {/* NAVIGATION CARDS */}
       <div className="dashboard-cards">
+        <AnimatedCard> 
         <div
           className="dashboard-card"
           role="button"
@@ -64,7 +66,7 @@ export default function Dashboard() {
           <h3>Devices</h3>
           <p>Manage and monitor your connected sensors.</p>
         </div>
-
+</AnimatedCard>
         <div
           className="dashboard-card"
           role="button"

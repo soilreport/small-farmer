@@ -1,0 +1,40 @@
+/* src/components/Input.css */
+
+.input-wrapper {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-wrapper label {
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.input-wrapper input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, background-color 0.2s;
+  background-color: #fff;
+  color: #000;
+}
+
+.input-wrapper input:focus {
+  border-color: #4f46e5; /* Indigo-600 */
+}
+
+.input-wrapper input.dark {
+  background-color: #1f2937; /* gray-800 */
+  color: #f9fafb; /* gray-50 */
+  border-color: #374151; /* gray-700 */
+}
+
+.input-wrapper .error {
+  color: #dc2626; /* red-600 */
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
