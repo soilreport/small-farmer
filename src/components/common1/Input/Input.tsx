@@ -16,14 +16,13 @@ const Input = ({ label, validator, ...props }: InputProps) => {
   };
 
   return (
-    <div className="mb-4">
-      {label && <label className="block mb-1">{label}</label>}
+    <div className="input-wrapper">
+      {label && <label>{label}</label>}
       <input
         {...props}
         onChange={handleChange}
-        className="w-full border rounded px-2 py-1 dark:bg-gray-700 dark:border-gray-600"
       />
-      {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
+      {error && <p className="error">{error}</p>}
     </div>
   );
 };

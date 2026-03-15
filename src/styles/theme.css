@@ -1,0 +1,53 @@
+/* Light theme – like VS Code light: light backgrounds, dark text */
+html.light {
+  --sf-color-bg: #f3f4f6;
+  --sf-color-surface: #ffffff;
+  --sf-color-surface-alt: #e5e7eb;
+  --sf-color-text: #111827;
+  --sf-color-text-muted: #6b7280;
+  --sf-color-border: #d1d5db;
+  --sf-color-input-bg: #ffffff;
+  --sf-color-input-border: #d1d5db;
+  --sf-scrollbar-track: #e5e7eb;
+  --sf-scrollbar-thumb: #9ca3af;
+  --sf-scrollbar-thumb-hover: #6b7280;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
+}
+
+/* Dark theme – like VS Code dark: dark backgrounds, light text */
+html.dark {
+  --sf-color-bg: #0d1117;
+  --sf-color-surface: #161b22;
+  --sf-color-surface-alt: #21262d;
+  --sf-color-text: #e6edf3;
+  --sf-color-text-muted: #8b949e;
+  --sf-color-border: #30363d;
+  --sf-color-input-bg: #0d1117;
+  --sf-color-input-border: #30363d;
+  --sf-scrollbar-track: #21262d;
+  --sf-scrollbar-thumb: #484f58;
+  --sf-scrollbar-thumb-hover: #6e7681;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
+}
+
+html {
+  /* Default to light if no class yet (script in index.html sets class immediately) */
+  --sf-color-bg: #f3f4f6;
+  --sf-color-surface: #ffffff;
+  --sf-color-surface-alt: #e5e7eb;
+  --sf-color-text: #111827;
+  --sf-color-text-muted: #6b7280;
+  --sf-color-border: #d1d5db;
+  --sf-color-input-bg: #ffffff;
+  --sf-color-input-border: #d1d5db;
+  --sf-scrollbar-track: #e5e7eb;
+  --sf-scrollbar-thumb: #9ca3af;
+  --sf-scrollbar-thumb-hover: #6b7280;
+}
+
+body {
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
+}

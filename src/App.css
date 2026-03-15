@@ -38,22 +38,22 @@ a {
   color: inherit;
 }
 
-/* Scrollbar styling */
+/* Scrollbar – theme-aware */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--sf-scrollbar-track, #e5e7eb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
+  background: var(--sf-scrollbar-thumb, #9ca3af);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a1a1a1;
+  background: var(--sf-scrollbar-thumb-hover, #6b7280);
 }

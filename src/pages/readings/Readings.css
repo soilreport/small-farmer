@@ -4,16 +4,18 @@
   padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
 }
 
 .readings-container h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
 }
 
 .readings-container > p {
-  color: #555;
+  color: var(--sf-color-text-muted);
   margin-bottom: 1.5rem;
 }
 
@@ -26,10 +28,12 @@
 }
 
 .readings-container .stat-card {
-  background: white;
+  background: var(--sf-color-surface);
+  color: var(--sf-color-text);
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--sf-color-border);
   border-left: 5px solid #2e7d32;
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -47,7 +51,7 @@
 .readings-container .stat-card h3 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
-  color: #333;
+  color: var(--sf-color-text);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -57,15 +61,15 @@
   font-size: 2rem;
   font-weight: bold;
   margin: 0.5rem 0;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
 }
 
 .readings-container .stat-card .status {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--sf-color-text-muted);
   margin: 0;
   padding: 0.3rem 0.8rem;
-  background: #f8f9fa;
+  background: var(--sf-color-surface-alt);
   border-radius: 20px;
   display: inline-block;
 }
@@ -82,17 +86,18 @@
 }
 
 .readings-charts .chart-card {
-  background: white;
+  background: var(--sf-color-surface);
+  color: var(--sf-color-text);
   border-radius: 12px;
   padding: 1rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  border: 1px solid #eee;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--sf-color-border);
 }
 
 .readings-charts .chart-card h3 {
   margin: 0 0 0.75rem 0;
   font-size: 1rem;
-  color: #333;
+  color: var(--sf-color-text);
 }
 
 .readings-charts .chart-wrap {
@@ -103,7 +108,7 @@
 .readings-charts .chart-meta {
   margin: 0;
   font-size: 0.8rem;
-  color: #666;
+  color: var(--sf-color-text-muted);
 }
 
 @media (max-width: 768px) {
@@ -117,15 +122,17 @@
 
 /* recent activity */
 .readings-container .recent-activity {
-  background: #f8f9fa;
+  background: var(--sf-color-surface-alt);
+  color: var(--sf-color-text);
   padding: 1.5rem;
   border-radius: 12px;
   margin-top: 0;
+  border: 1px solid var(--sf-color-border);
 }
 
 .readings-container .recent-activity h2 {
   margin-top: 0;
-  color: #333;
+  color: var(--sf-color-text);
   margin-bottom: 1rem;
   font-size: 1.3rem;
 }
@@ -137,7 +144,7 @@
 
 .readings-container .recent-activity li {
   padding: 0.8rem 0;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--sf-color-border);
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -154,14 +161,14 @@
 
 .readings-faq h2 {
   margin: 0 0 0.4rem 0;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
   font-size: 1.4rem;
 }
 
 .readings-faq-intro {
   margin: 0 0 0.8rem 0;
   font-size: 0.9rem;
-  color: #555;
+  color: var(--sf-color-text-muted);
 }
 
 .readings-faq-list {
@@ -172,11 +179,12 @@
 
 .readings-faq-item {
   text-align: left;
-  background: #ffffff;
+  background: var(--sf-color-surface);
+  color: var(--sf-color-text);
   border-radius: 12px;
   padding: 0.75rem 0.9rem;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--sf-color-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 .readings-faq-item.open {
@@ -192,7 +200,7 @@
 
 .readings-faq-question {
   font-weight: 600;
-  color: #2e7d32;
+  color: var(--sf-color-primary);
 }
 
 .readings-faq-toggle {
@@ -202,7 +210,7 @@
 .readings-faq-answer {
   margin: 0.4rem 0 0 0;
   font-size: 0.9rem;
-  color: #444;
+  color: var(--sf-color-text-muted);
 }
 
 @media (max-width: 768px) {

@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
 }
 
 .crop-region-header {
@@ -11,19 +13,19 @@
   gap: 1.5rem;
   padding: 1.2rem 1.4rem;
   border-radius: 16px;
-  background: linear-gradient(135deg, #fffde7, #e8f5e9);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--sf-color-surface);
+  border: 1px solid var(--sf-color-border);
 }
 
 .crop-region-header h1 {
   margin: 0 0 0.4rem 0;
   font-size: 1.6rem;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
 }
 
 .crop-region-header p {
   margin: 0;
-  color: #555;
+  color: var(--sf-color-text-muted);
   max-width: 520px;
 }
 
@@ -35,12 +37,12 @@
 
 .crop-region-body h2 {
   margin: 0 0 0.4rem 0;
-  color: #2e7d32;
+  color: var(--sf-color-primary);
 }
 
 .crop-region-body p {
   margin: 0 0 0.5rem 0;
-  color: #444;
+  color: var(--sf-color-text-muted);
 }
 
 .crop-list {
@@ -56,14 +58,15 @@
   justify-content: center;
   padding: 0.35rem 0.9rem;
   border-radius: 999px;
-  background: #e0f2f1;
-  color: #00695c;
+  background: var(--sf-color-surface-alt);
+  color: var(--sf-color-primary);
   font-size: 0.9rem;
+  border: 1px solid var(--sf-color-border);
 }
 
 .crop-region-body h3 {
   margin: 0.7rem 0 0.3rem 0;
-  color: #2e7d32;
+  color: var(--sf-color-primary);
 }
 
 .crop-region-body ul {
@@ -77,4 +80,3 @@
     align-items: flex-start;
   }
 }
-

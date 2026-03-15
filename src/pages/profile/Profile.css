@@ -4,6 +4,8 @@
   padding: 1.5rem;
   max-width: 900px;
   margin: 0 auto;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
 }
 
 .profile-header {
@@ -11,19 +13,21 @@
 }
 
 .profile-header h1 {
-  color: #1b5e20;
+  color: var(--sf-color-primary);
   margin-bottom: 0.35rem;
 }
 
 .profile-subtitle {
-  color: #666;
+  color: var(--sf-color-text-muted);
 }
 
 .profile-card {
-  background: white;
+  background: var(--sf-color-surface);
+  color: var(--sf-color-text);
   padding: 1.25rem;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--sf-color-border);
   border-left: 5px solid #2e7d32;
 }
 
@@ -34,7 +38,7 @@
   align-items: center;
   gap: 1rem;
   padding: 0.75rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--sf-color-border);
 }
 
 .profile-row:last-child,
@@ -44,11 +48,11 @@
 
 .label {
   font-weight: 600;
-  color: #333;
+  color: var(--sf-color-text);
 }
 
 .value {
-  color: #444;
+  color: var(--sf-color-text-muted);
 }
 
 .badge {
@@ -60,18 +64,21 @@
 }
 
 .badge.farmer {
-  background: #e8f5e9;
-  color: #1b5e20;
+  background: var(--sf-color-surface-alt);
+  color: var(--sf-color-primary);
+  border: 1px solid var(--sf-color-border);
 }
 
 .badge.researcher {
-  background: #e3f2fd;
+  background: var(--sf-color-surface-alt);
   color: #1565c0;
+  border: 1px solid var(--sf-color-border);
 }
 
 .badge.admin {
-  background: #fff3e0;
+  background: var(--sf-color-surface-alt);
   color: #e65100;
+  border: 1px solid var(--sf-color-border);
 }
 
 .profile-actions {
@@ -80,35 +87,37 @@
 
 .profile-btn {
   display: inline-block;
-  background: #2e7d32;
-  color: white;
+  background: var(--sf-color-primary);
+  color: #fff;
   padding: 0.7rem 1rem;
   border-radius: 8px;
   font-weight: 600;
 }
 
 .profile-btn:hover {
-  background: #1b5e20;
+  background: var(--sf-color-primary-dark);
 }
 
 .select {
   padding: 0.55rem 0.7rem;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--sf-color-input-border);
+  background: var(--sf-color-input-bg);
+  color: var(--sf-color-text);
   min-width: 210px;
 }
 
 .checkbox-row input {
   width: 18px;
   height: 18px;
-  accent-color: #2e7d32;
+  accent-color: var(--sf-color-primary);
 }
 
 .save-btn {
   margin-top: 1rem;
   width: 100%;
-  background: #2e7d32;
-  color: white;
+  background: var(--sf-color-primary);
+  color: #fff;
   padding: 0.75rem;
   border-radius: 8px;
   font-weight: 700;
@@ -117,5 +126,5 @@
 }
 
 .save-btn:hover {
-  background: #1b5e20;
+  background: var(--sf-color-primary-dark);
 }

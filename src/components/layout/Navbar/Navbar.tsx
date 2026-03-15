@@ -1,12 +1,15 @@
 // src/components/layout/Navbar/Navbar.tsx
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
-import { useState } from "react"; //changed-for mobile menu toggle
+import { useTheme } from "../../../context/ThemeContext";
+import { useState } from "react";
+import Button from "../../common1/Button/Button";
 import "./Navbar.css";
 
 export default function Navbar() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const [menuOpen, setMenuOpen] = useState(false); //changed-mobile menu state
 
@@ -54,6 +57,26 @@ export default function Navbar() {
         <Link to="/settings" onClick={() => setMenuOpen(false)}>
           Settings
         </Link>
+
+        <Link to="/export" onClick={() => setMenuOpen(false)}>Export</Link>
+        <Link to="/purchases" onClick={() => setMenuOpen(false)}>Purchases</Link>
+
+        {user.role === "admin" && (
+          <>
+            <Link to="/admin/users" onClick={() => setMenuOpen(false)}>Users</Link>
+            <Link to="/admin/system" onClick={() => setMenuOpen(false)}>System</Link>
+          </>
+        )}
+
+        <Button
+          variant="ghost"
+          onClick={() => {
+            toggleTheme();
+            setMenuOpen(false);
+          }}
+        >
+          {theme === "light" ? "Dark" : "Light"}
+        </Button>
 
         {/*changed-logout button */}
         <button className="logout-btn" onClick={handleLogout}>

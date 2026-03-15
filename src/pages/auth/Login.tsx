@@ -222,6 +222,11 @@ export default function Login() {
 
         <div className="auth-footer">
           <p>
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot password?
+            </Link>
+          </p>
+          <p>
             Don&apos;t have an account?{" "}
             <Link to="/register" className="auth-link">
               Create one here

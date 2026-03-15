@@ -1,0 +1,15 @@
+/* src/styles/animations.css */
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeInUp 0.25s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

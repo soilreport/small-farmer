@@ -4,24 +4,28 @@
   padding: 1.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
 }
 
 .alerts-container h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
 }
 
 .alerts-container > p {
-  color: #555;
+  color: var(--sf-color-text-muted);
   margin-bottom: 1.5rem;
 }
 
 .alerts-summary-card {
-  background: white;
+  background: var(--sf-color-surface);
+  color: var(--sf-color-text);
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--sf-color-border);
   border-left: 5px solid #ff922b;
   margin-bottom: 2rem;
   max-width: 320px;
@@ -30,30 +34,37 @@
 .alerts-summary-card h3 {
   margin: 0 0 1rem 0;
   font-size: 1rem;
-  color: #333;
+  color: var(--sf-color-text);
 }
 
 .alerts-summary-card .value {
   font-size: 2rem;
   font-weight: bold;
   margin: 0.5rem 0;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
 }
 
 .alerts-summary-card .status {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--sf-color-text-muted);
   margin: 0;
   padding: 0.3rem 0.8rem;
-  background: #f8f9fa;
+  background: var(--sf-color-surface-alt);
   border-radius: 20px;
   display: inline-block;
 }
 
+.alerts-panel { margin-top: 1rem; }
+.alerts-panel h3 { margin: 0 0 0.5rem 0; font-size: 1.1rem; }
+.alerts-panel ul { list-style: none; padding: 0; margin: 0; }
+.alerts-panel li { margin-bottom: 0.5rem; }
+.alerts-panel--empty p { color: var(--sf-color-text-muted); margin: 0; }
+.alerts-panel-recommendation { font-size: 0.85rem; color: var(--sf-color-text-muted); margin: 0.2rem 0 0 0; }
+
 .alerts-list h2 {
   font-size: 1.3rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: var(--sf-color-text);
 }
 
 .alerts-list ul {
@@ -69,27 +80,29 @@
   grid-template-columns: 1fr 1fr auto;
   gap: 1rem;
   align-items: center;
-  background: #fff8f0;
+  background: var(--sf-color-surface-alt);
+  color: var(--sf-color-text);
+  border: 1px solid var(--sf-color-border);
   border-left: 4px solid #ff922b;
 }
 
 .alerts-list .alert-item.info {
-  background: #e3f2fd;
+  background: var(--sf-color-surface-alt);
   border-left-color: #1976d2;
 }
 
 .alerts-list .alert-type {
   font-weight: 600;
-  color: #333;
+  color: var(--sf-color-text);
 }
 
 .alerts-list .alert-location {
-  color: #666;
+  color: var(--sf-color-text-muted);
 }
 
 .alerts-list .alert-time {
   font-size: 0.9rem;
-  color: #888;
+  color: var(--sf-color-text-muted);
 }
 
 /* soil alerts with recommendations */
@@ -102,16 +115,17 @@
 
 .alerts-list .alert-item.soil-alert .alert-metric {
   font-size: 0.9rem;
-  color: #555;
+  color: var(--sf-color-text-muted);
 }
 
 .alerts-list .alert-item.soil-alert .alert-recommendation {
   margin: 0;
   font-size: 0.9rem;
-  color: #444;
-  background: rgba(255, 255, 255, 0.6);
+  color: var(--sf-color-text);
+  background: var(--sf-color-surface);
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
+  border: 1px solid var(--sf-color-border);
 }
 
 .alerts-list .alert-item.soil-alert-warning {
@@ -120,10 +134,21 @@
 
 .alerts-list .alert-item.soil-alert-danger {
   border-left-color: #c92a2a;
-  background: #fff5f5;
+  background: var(--sf-color-surface-alt);
 }
 
 .no-alerts {
-  color: #666;
+  color: var(--sf-color-text-muted);
   margin: 0;
+}
+
+.alert-settings-page {
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
+}
+
+.alert-settings-saved {
+  color: var(--sf-color-primary);
+  margin-top: 0.5rem;
+  margin-bottom: 0;
 }

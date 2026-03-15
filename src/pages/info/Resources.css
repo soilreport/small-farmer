@@ -2,6 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
 }
 
 .resources-header {
@@ -11,19 +13,19 @@
   gap: 1.5rem;
   padding: 1.3rem 1.5rem;
   border-radius: 16px;
-  background: linear-gradient(135deg, #e3f2fd, #fce4ec);
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  background: var(--sf-color-surface);
+  border: 1px solid var(--sf-color-border);
 }
 
 .resources-header h1 {
   margin: 0 0 0.4rem 0;
   font-size: 1.7rem;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
 }
 
 .resources-header p {
   margin: 0;
-  color: #444;
+  color: var(--sf-color-text-muted);
   max-width: 520px;
 }
 
@@ -43,9 +45,10 @@
   display: flex;
   gap: 0.9rem;
   padding: 1rem 1.1rem;
-  background: #ffffff;
+  background: var(--sf-color-surface);
+  color: var(--sf-color-text);
   border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--sf-color-border);
   box-shadow: 0 5px 14px rgba(0, 0, 0, 0.06);
 }
 
@@ -56,25 +59,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f1f8e9;
+  background: var(--sf-color-surface-alt);
   font-size: 1.5rem;
 }
 
 .resource-text h2 {
   margin: 0 0 0.2rem 0;
   font-size: 1.1rem;
-  color: #1b5e20;
+  color: var(--sf-color-primary);
 }
 
 .resource-text p {
   margin: 0 0 0.4rem 0;
   font-size: 0.95rem;
-  color: #555;
+  color: var(--sf-color-text-muted);
 }
 
 .resource-link-hint {
   font-size: 0.8rem;
-  color: #2e7d32;
+  color: var(--sf-color-primary);
 }
 
 @media (max-width: 900px) {
@@ -89,4 +92,3 @@
     align-items: flex-start;
   }
 }
-

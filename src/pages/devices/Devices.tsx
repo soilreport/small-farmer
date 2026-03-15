@@ -1,8 +1,10 @@
 // src/pages/devices/Devices.tsx
+import { Link } from "react-router-dom";
 import "./Devices.css";
 import { useDevices, type Device } from "../../hooks/useDevices";
+import { getStoredDevices } from "../../stores/deviceStore";
 
-const initialDevices: Device[] = [
+const defaultDevices: Device[] = [
   {
     id: "1",
     name: "Sensor Field A",
@@ -42,6 +44,8 @@ const initialDevices: Device[] = [
 ];
 
 export default function Devices() {
+  const stored = getStoredDevices();
+  const initialDevices = stored.length > 0 ? stored : defaultDevices;
   const {
     devices,
     onlineCount,
@@ -69,6 +73,10 @@ export default function Devices() {
       </div>
 
       <div className="devices-list-section">
+        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "0.75rem", flexWrap: "wrap" }}>
+          <Link to="/devices/add" className="device-action-link">+ Add device</Link>
+          <Link to="/devices/groups" className="device-action-link">Groups</Link>
+        </div>
         <h2>Device List</h2>
 
         {devices.length === 0 ? (

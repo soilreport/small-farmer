@@ -6,6 +6,7 @@
  * this Alerts page renders real alerts + recommendations.
  */
 
+import { Link } from "react-router-dom";
 import "./Alerts.css";
 import { useSoilInsights } from "../../context/SoilInsightsContext";
 import type { SoilAlert } from "../../utils/evaluateInsights";
@@ -39,6 +40,9 @@ export default function Alerts() {
       </div>
 
       <div className="alerts-list">
+        <p style={{ marginBottom: "0.5rem" }}>
+          <Link to="/alerts/settings" className="forgot-password">Alert settings</Link>
+        </p>
         <h2>Recommendations</h2>
 
         {soilAlerts.length === 0 ? (

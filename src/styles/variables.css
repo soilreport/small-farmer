@@ -1,0 +1,7 @@
+:root {
+  --sf-color-primary: #1b5e20;
+  --sf-color-primary-dark: #104015;
+  --sf-radius-lg: 12px;
+  --sf-radius-pill: 999px;
+  --sf-transition-fast: 0.18s ease;
+}

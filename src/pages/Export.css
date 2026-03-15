@@ -1,0 +1,17 @@
+.export-page {
+  padding: 1.5rem;
+  max-width: 600px;
+  margin: 0 auto;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
+}
+
+.export-page h1 {
+  color: var(--sf-color-primary);
+  margin-bottom: 0.5rem;
+}
+
+.export-page p {
+  color: var(--sf-color-text-muted);
+  margin-bottom: 1rem;
+}

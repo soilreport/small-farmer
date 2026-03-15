@@ -1,9 +1,8 @@
-/* src/components/layout/Layout.css */
 .layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f8f9fa;
+  background: var(--sf-color-bg);
 }
 
 .main-content {
@@ -12,14 +11,17 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
-  background-color: white;
+  background: var(--sf-color-bg);
+  color: var(--sf-color-text);
 }
 
 @media (min-width: 768px) {
   .main-content {
     padding: 2rem;
     margin: 1rem auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-radius: var(--sf-radius-lg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+    background: var(--sf-color-surface);
+    border: 1px solid var(--sf-color-border);
   }
 }

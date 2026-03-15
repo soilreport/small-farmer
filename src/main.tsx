@@ -8,19 +8,20 @@ import "./index.css";
 import { SoilInsightsProvider } from "./context/SoilInsightsContext";
 import { DeviceProvider } from "./context/DeviceContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { AuthProvider } from "./context/AuthContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    { /* BrowserRouter enables routing in the app, with a basename for GitHub Pages deployment */}
-    <BrowserRouter basename="/small-farmer">
-      { /* Context Providers wrap the entire app to provide global state */}
-      <SoilInsightsProvider>
-        <ThemeProvider> 
-          <DeviceProvider>
-        <App />
-          </DeviceProvider> 
-        </ThemeProvider>
-      </SoilInsightsProvider>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <AuthProvider>
+        <SoilInsightsProvider>
+          <ThemeProvider>
+            <DeviceProvider>
+              <App />
+            </DeviceProvider>
+          </ThemeProvider>
+        </SoilInsightsProvider>
+      </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

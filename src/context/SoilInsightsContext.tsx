@@ -4,11 +4,6 @@
  * This context stores:
  * - latest sensor readings (single source of truth)
  * - computed alerts + recommendations from research rules
- *
- * Any page can use this:
- * - Readings page updates readings
- * - Alerts page reads computed alerts
- * - Research page reads per-article alerts/recommendations
  */
 
 import {
