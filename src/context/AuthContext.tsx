@@ -1,11 +1,5 @@
 // src/context/AuthContext.tsx
-
-import {
-  createContext,
-  useState,
-  useContext,
-  type ReactNode,
-} from "react";
+import { createContext, useState, useContext, type ReactNode } from "react";
 
 export interface User {
   id: string;
@@ -28,26 +22,23 @@ type LoginOptions = {
 
 interface AuthContextType {
   user: User | null;
-  login: (
-    email: string,
-    password: string,
-    options?: LoginOptions
-  ) => Promise<void>;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+  login: (email: string, password: string, options?: LoginOptions) => Promise<void>;
   register: (data: RegisterPayload) => Promise<void>;
   logout: () => void;
-  isAuthenticated: boolean;
 }
 
 const STORAGE_KEY = "user";
-
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 function getStoredUser(): User | null {
   try {
-    const savedUser = localStorage.getItem(STORAGE_KEY);
-    return savedUser ? JSON.parse(savedUser) : null;
-  } catch (error) {
-    console.error("Failed to parse user from localStorage:", error);
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : null;
+  } catch (err) {
+    console.error("Failed to parse user from localStorage:", err);
     return null;
   }
 }
@@ -64,23 +55,19 @@ function deriveNameFromEmail(email: string): string {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(getStoredUser);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const login = async (
-    email: string,
-    password: string,
-    options?: LoginOptions
-  ) => {
+  const login = async (email: string, password: string, options?: LoginOptions) => {
+    setLoading(true);
+    setError(null);
     try {
+      // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       const cleanEmail = email.trim();
-      if (!cleanEmail) {
-        throw new Error("Email is required");
-      }
-
-      if (!password || password.length < 6) {
-        throw new Error("Invalid password");
-      }
+      if (!cleanEmail) throw new Error("Email is required");
+      if (!password || password.length < 6) throw new Error("Password is too short");
 
       const mockUser: User = {
         id: Math.random().toString(36).substring(2) + Date.now().toString(36),
@@ -91,14 +78,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       setUser(mockUser);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
-    } catch (error) {
-      console.error("Login failed:", error);
-      throw error;
+    } catch (err: any) {
+      console.error("Login failed:", err);
+      setError(err.message || "Login failed");
+      throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
   const register = async (data: RegisterPayload) => {
+    setLoading(true);
+    setError(null);
     try {
+      // Simulate API call delay
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       const fullName = data.fullName.trim();
@@ -106,9 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       if (!fullName) throw new Error("Full name is required");
       if (!email) throw new Error("Email is required");
-      if (!data.password || data.password.length < 6) {
-        throw new Error("Password too short");
-      }
+      if (!data.password || data.password.length < 6) throw new Error("Password too short");
 
       const newUser: User = {
         id: Math.random().toString(36).substring(2) + Date.now().toString(36),
@@ -119,9 +110,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       setUser(newUser);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
-    } catch (error) {
-      console.error("Register failed:", error);
-      throw error;
+    } catch (err: any) {
+      console.error("Register failed:", err);
+      setError(err.message || "Registration failed");
+      throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -132,10 +126,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const contextValue: AuthContextType = {
     user,
+    isAuthenticated: !!user,
+    loading,
+    error,
     login,
     register,
     logout,
-    isAuthenticated: !!user,
   };
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
@@ -143,11 +139,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
-
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
-
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
 

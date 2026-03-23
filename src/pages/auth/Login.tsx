@@ -31,16 +31,16 @@ export default function Login() {
 
     const emailRequired = validateRequired(email, "Email");
     if (!emailRequired.valid) {
-      newErrors.email = emailRequired.message || "Email is required";
+      newErrors.email = "Please enter your email";
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = "Please enter a valid email address";
       isValid = false;
     }
 
     const passwordRequired = validateRequired(password, "Password");
     if (!passwordRequired.valid) {
-      newErrors.password = passwordRequired.message || "Password is required";
+      newErrors.password = "Please enter your password";
       isValid = false;
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
@@ -62,9 +62,16 @@ export default function Login() {
     try {
       await login(formData.email.trim(), formData.password);
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
-      setApiError("Login failed. Please check your credentials.");
+
+      // Better user-friendly error handling
+      if (error?.message?.toLowerCase().includes("network")) {
+        setApiError("Network error. Please check your internet connection.");
+      } else {
+        setApiError("Invalid email or password. Please try again.");
+      }
+
       setErrors({
         email: "Invalid email or password",
         password: "Invalid email or password",
@@ -133,7 +140,9 @@ export default function Login() {
       <form className="auth-card" onSubmit={handleSubmit}>
         <div className="auth-header">
           <h1>🌱 Soil Monitoring Platform</h1>
-          <p className="auth-subtitle">Login to your agricultural dashboard</p>
+          <p className="auth-subtitle">
+            Log in to view your dashboard and monitor your farm data.
+          </p>
         </div>
 
         {apiError && (
@@ -235,8 +244,8 @@ export default function Login() {
 
           <div className="context-info">
             <small>
-              This platform is designed for Azerbaijani farmers and researchers
-              to monitor soil health.
+              This system helps farmers and researchers monitor soil conditions
+              and make better decisions.
             </small>
           </div>
         </div>

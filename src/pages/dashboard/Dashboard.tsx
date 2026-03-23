@@ -48,25 +48,30 @@ export default function Dashboard() {
             {getGreeting()}, {displayName}!
           </h1>
 
-          <p>Welcome to Small Farmer 🌱</p>
+          <p>
+            Monitor your farm, track sensor data, and get alerts in one place.
+          </p>
         </div>
       </div>
 
       {/* NAVIGATION CARDS */}
       <div className="dashboard-cards">
-        <AnimatedCard> 
-        <div
-          className="dashboard-card"
-          role="button"
-          tabIndex={0}
-          onClick={() => go("/devices")}
-          onKeyDown={(e) => e.key === "Enter" && go("/devices")}
-        >
-          <img className="card-icon" src={devicesImg} alt="Devices icon" />
-          <h3>Devices</h3>
-          <p>Manage and monitor your connected sensors.</p>
-        </div>
-</AnimatedCard>
+        <AnimatedCard>
+          <div
+            className="dashboard-card"
+            role="button"
+            tabIndex={0}
+            onClick={() => go("/devices")}
+            onKeyDown={(e) => e.key === "Enter" && go("/devices")}
+          >
+            <img className="card-icon" src={devicesImg} alt="Devices icon" />
+            <h3>Devices</h3>
+            <p>
+              View and manage your connected sensors and devices.
+            </p>
+          </div>
+        </AnimatedCard>
+
         <div
           className="dashboard-card"
           role="button"
@@ -76,7 +81,9 @@ export default function Dashboard() {
         >
           <img className="card-icon" src={readingsImg} alt="Readings icon" />
           <h3>Readings</h3>
-          <p>View real-time soil data and history.</p>
+          <p>
+            Check real-time and past data collected from your devices.
+          </p>
         </div>
 
         <div
@@ -88,7 +95,9 @@ export default function Dashboard() {
         >
           <img className="card-icon" src={alertsImg} alt="Alerts icon" />
           <h3>Alerts</h3>
-          <p>Check soil warnings and recommendations.</p>
+          <p>
+            See alerts when sensor values go outside safe limits.
+          </p>
         </div>
 
         <div
@@ -100,7 +109,9 @@ export default function Dashboard() {
         >
           <img className="card-icon" src={researchImg} alt="Research icon" />
           <h3>Research</h3>
-          <p>Explore scientific soil insights.</p>
+          <p>
+            Explore insights and tips to improve farming decisions.
+          </p>
         </div>
       </div>
     </div>

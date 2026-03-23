@@ -1,0 +1,29 @@
+.about-page {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.about-page h1 {
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.about-page p {
+  margin-bottom: 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  color: #1f2937;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.back-link:hover {
+  color: #3b82f6;
+}

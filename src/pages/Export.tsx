@@ -17,23 +17,37 @@ export default function Export() {
       alerts: insights.alerts,
       devices,
     };
+
     const blob = new Blob([JSON.stringify(data, null, 2)], {
       type: "application/json",
     });
+
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `small-farmer-export-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `small-farmer-export-${new Date()
+      .toISOString()
+      .slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   return (
     <div className="export-page">
-      <h1>Export data</h1>
-      <p>Download your readings, alerts, and device list as JSON.</p>
+      <h1>Export Data</h1>
+
+      <p>
+        Download your farm data, including sensor readings, alerts, and devices.
+        This helps you keep a backup or analyze your data later.
+      </p>
+
+      <p style={{ marginTop: 8, opacity: 0.8 }}>
+        The file will be downloaded in JSON format. You can open it using tools
+        like Excel, online viewers, or use it for further analysis.
+      </p>
+
       <Button variant="primary" onClick={handleExport}>
-        Download export
+        Download Data
       </Button>
     </div>
   );

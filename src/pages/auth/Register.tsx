@@ -40,22 +40,22 @@ export default function Register() {
 
     const nameRequired = validateRequired(fullName, "Full name");
     if (!nameRequired.valid) {
-      newErrors.fullName = nameRequired.message || "Full name is required";
+      newErrors.fullName = "Please enter your full name";
       isValid = false;
     }
 
     const emailRequired = validateRequired(email, "Email");
     if (!emailRequired.valid) {
-      newErrors.email = emailRequired.message || "Email is required";
+      newErrors.email = "Please enter your email";
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Email is invalid";
+      newErrors.email = "Please enter a valid email address";
       isValid = false;
     }
 
     const passwordRequired = validateRequired(password, "Password");
     if (!passwordRequired.valid) {
-      newErrors.password = passwordRequired.message || "Password is required";
+      newErrors.password = "Please create a password";
       isValid = false;
     } else if (password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
@@ -105,9 +105,17 @@ export default function Register() {
       });
 
       navigate("/dashboard");
-    } catch (err) {
+    } catch (err: any) {
       console.error("Register error:", err);
-      setApiError("Registration failed. Please check your inputs and try again.");
+
+      // Better error messages
+      if (err?.message?.toLowerCase().includes("email")) {
+        setApiError("This email is already registered. Try logging in instead.");
+      } else if (err?.message?.toLowerCase().includes("network")) {
+        setApiError("Network error. Please check your connection.");
+      } else {
+        setApiError("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -118,7 +126,9 @@ export default function Register() {
       <form className="auth-card" onSubmit={handleSubmit}>
         <div className="auth-header">
           <h1>Create Account</h1>
-          <p className="auth-subtitle">Join the Soil Monitoring Platform</p>
+          <p className="auth-subtitle">
+            Create your account to start monitoring your farm data.
+          </p>
         </div>
 
         {apiError && (
@@ -133,7 +143,7 @@ export default function Register() {
           <input
             id="fullName"
             name="fullName"
-            placeholder="Your full name"
+            placeholder="Enter your full name"
             value={form.fullName}
             onChange={handleChange}
             disabled={loading}
@@ -167,7 +177,7 @@ export default function Register() {
             id="password"
             name="password"
             type="password"
-            placeholder="Create a password (min 6 chars)"
+            placeholder="Create a password (min 6 characters)"
             value={form.password}
             onChange={handleChange}
             disabled={loading}
@@ -205,9 +215,9 @@ export default function Register() {
 
         <div className="auth-footer">
           <p>
-            Already registered?{" "}
+            Already have an account?{" "}
             <Link to="/login" className="auth-link">
-              Login
+              Login here
             </Link>
           </p>
         </div>

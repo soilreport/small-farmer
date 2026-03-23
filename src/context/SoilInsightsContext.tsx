@@ -1,11 +1,4 @@
 // src/context/SoilInsightsContext.tsx
-
-/**
- * This context stores:
- * - latest sensor readings (single source of truth)
- * - computed alerts + recommendations from research rules
- */
-
 import {
   createContext,
   useContext,
@@ -25,7 +18,10 @@ import {
 interface SoilInsightsContextValue {
   readings: SoilReadings;
   setReadings: Dispatch<SetStateAction<SoilReadings>>;
+  updateReading: (metric: keyof SoilReadings, value: number) => Promise<void>;
   insights: InsightsResult;
+  loading: boolean;
+  error: string | null;
 }
 
 const SoilInsightsContext = createContext<SoilInsightsContextValue | null>(null);
@@ -35,8 +31,6 @@ const DEFAULT_READINGS: SoilReadings = {
   moisture: 53,
   ph: 6.4,
   ec: 0.6,
-
-  // NPK shown in UI (not compared with rules yet)
   nitrogen: 115,
   phosphorus: 45,
   potassium: 210,
@@ -44,21 +38,39 @@ const DEFAULT_READINGS: SoilReadings = {
 
 export function SoilInsightsProvider({ children }: { children: ReactNode }) {
   const [readings, setReadings] = useState<SoilReadings>(DEFAULT_READINGS);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   /**
-   * Recompute insights whenever readings change
+   * Update a single reading.
+   * Wrap in try/catch to safely handle future API/sensor errors.
    */
-  const insights = useMemo(() => {
-    return evaluateInsights(readings, RESEARCH_DATA);
-  }, [readings]);
+  const updateReading = async (metric: keyof SoilReadings, value: number) => {
+    setLoading(true);
+    setError(null);
+    try {
+      // Simulate potential API or sensor call
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      setReadings((prev) => ({
+        ...prev,
+        [metric]: value,
+      }));
+    } catch (err: any) {
+      console.error("Failed to update reading:", err);
+      setError(err.message || "Failed to update reading");
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Compute insights whenever readings change
+  const insights = useMemo(() => evaluateInsights(readings, RESEARCH_DATA), [readings]);
 
   const value = useMemo<SoilInsightsContextValue>(
-    () => ({
-      readings,
-      setReadings,
-      insights,
-    }),
-    [readings, insights]
+    () => ({ readings, setReadings, updateReading, insights, loading, error }),
+    [readings, insights, loading, error]
   );
 
   return (
@@ -69,14 +81,10 @@ export function SoilInsightsProvider({ children }: { children: ReactNode }) {
 }
 
 /**
- * Hook for easier usage in components
+ * Hook to use SoilInsights context
  */
 export function useSoilInsights(): SoilInsightsContextValue {
   const context = useContext(SoilInsightsContext);
-
-  if (!context) {
-    throw new Error("useSoilInsights must be used inside SoilInsightsProvider");
-  }
-
+  if (!context) throw new Error("useSoilInsights must be used inside SoilInsightsProvider");
   return context;
 }

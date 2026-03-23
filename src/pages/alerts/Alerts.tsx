@@ -1,11 +1,5 @@
 // src/pages/alerts/Alerts.tsx
 
-/**
- * Uses global context (SoilInsightsContext), which is driven by Readings page.
- * Readings page updates readings -> evaluateInsights runs -> insights.alerts updates ->
- * this Alerts page renders real alerts + recommendations.
- */
-
 import { Link } from "react-router-dom";
 import "./Alerts.css";
 import { useSoilInsights } from "../../context/SoilInsightsContext";
@@ -22,14 +16,17 @@ export default function Alerts() {
 
   return (
     <div className="alerts-container">
-      <h1>Active Alerts</h1>
-      <p>Alerts that need your attention.</p>
+      <h1>Alerts</h1>
+      <p>
+        Alerts appear when your soil conditions go outside safe limits. Check them
+        to take action and protect your crops.
+      </p>
 
       <div className="alerts-summary-card">
         <h3>⚠️ Active Alerts</h3>
         <p className="value">{activeAlertsCount}</p>
         <p className="status">
-          {activeAlertsCount > 0 ? "Needs Attention" : "All clear"}
+          {activeAlertsCount > 0 ? "Needs attention" : "All conditions are normal"}
         </p>
 
         <p style={{ marginTop: 8, opacity: 0.8, fontSize: 13 }}>
@@ -41,13 +38,16 @@ export default function Alerts() {
 
       <div className="alerts-list">
         <p style={{ marginBottom: "0.5rem" }}>
-          <Link to="/alerts/settings" className="forgot-password">Alert settings</Link>
+          <Link to="/alerts/settings" className="forgot-password">
+            Manage alert settings
+          </Link>
         </p>
+
         <h2>Recommendations</h2>
 
         {soilAlerts.length === 0 ? (
           <p className="no-alerts">
-            ✅ No active research-based soil alerts at the moment.
+            ✅ No alerts right now. Your soil conditions are within safe ranges.
           </p>
         ) : (
           <ul>
@@ -63,15 +63,14 @@ export default function Alerts() {
 
 /**
  * Single alert item UI
- * Maps severity (info/warning/critical) to your CSS-friendly levels.
  */
 function SoilAlertItem({ alert }: { alert: SoilAlert }) {
   const level =
     alert.severity === "critical"
       ? "high"
       : alert.severity === "warning"
-        ? "medium"
-        : "low";
+      ? "medium"
+      : "low";
 
   const metricLabel = getMetricDisplayLabel(alert.metric);
   const metricValue = formatMetricValue(alert.metric, alert.value);
@@ -85,10 +84,12 @@ function SoilAlertItem({ alert }: { alert: SoilAlert }) {
       </span>
 
       {alert.recommendation ? (
-        <p className="alert-recommendation">{alert.recommendation}</p>
+        <p className="alert-recommendation">
+          💡 {alert.recommendation}
+        </p>
       ) : (
         <p className="alert-recommendation">
-          Recommendation: Check research details for this metric.
+          💡 Check the research section for recommendations on this value.
         </p>
       )}
 
