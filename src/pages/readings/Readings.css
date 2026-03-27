@@ -229,19 +229,6 @@
   opacity: 0.95;
 }
 
-.readings-api-hint {
-  font-size: 0.9rem;
-  color: var(--sf-color-text-muted);
-  margin-bottom: 0.75rem;
-}
-
-.readings-api-hint code {
-  font-size: 0.85rem;
-  background: var(--sf-color-surface-alt);
-  padding: 0.1rem 0.35rem;
-  border-radius: 4px;
-}
-
 .readings-api-row {
   display: flex;
   flex-wrap: wrap;

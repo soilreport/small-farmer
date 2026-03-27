@@ -110,11 +110,6 @@ export default function Readings() {
       {isApiConfigured() && (
         <div className="readings-api-section recent-activity">
           <h2>Backend sensor data</h2>
-          <p className="readings-api-hint">
-            Fetches <code>GET /device-state-latest?deviceId=…</code> and maps fields into the cards
-            above. Configure <code>VITE_API_BASE_URL</code> and optional{" "}
-            <code>VITE_API_TOKEN</code> in <code>.env.local</code>.
-          </p>
           <div className="readings-api-row">
             <label className="readings-api-label">
               Device ID
