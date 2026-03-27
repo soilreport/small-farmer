@@ -220,3 +220,61 @@
   }
 }
 
+/* Backend API block */
+.readings-api-section {
+  margin-bottom: 1.25rem;
+}
+
+.readings-api-section--muted {
+  opacity: 0.95;
+}
+
+.readings-api-hint {
+  font-size: 0.9rem;
+  color: var(--sf-color-text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.readings-api-hint code {
+  font-size: 0.85rem;
+  background: var(--sf-color-surface-alt);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.readings-api-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.readings-api-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--sf-color-text);
+}
+
+.readings-api-label input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid var(--sf-color-input-border);
+  background: var(--sf-color-input-bg);
+  color: var(--sf-color-text);
+  min-width: 160px;
+}
+
+.readings-api-error {
+  margin: 0.5rem 0 0 0;
+  color: #c62828;
+  font-size: 0.9rem;
+}
+
+.readings-api-success {
+  margin: 0.5rem 0 0 0;
+  color: var(--sf-color-primary);
+  font-size: 0.9rem;
+}
+

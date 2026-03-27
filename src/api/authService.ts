@@ -1,7 +1,8 @@
 /**
- * Auth API service (mock). Replace with real backend calls.
+ * Auth helpers aligned with CRM Postman routes (/signin, /register).
+ * App login still uses AuthContext mock unless you call these explicitly.
  */
-import { api } from "./api";
+import { postSignin, postRegister } from "./crmApi";
 
 export interface LoginPayload {
   email: string;
@@ -15,10 +16,20 @@ export interface RegisterPayload {
   role: string;
 }
 
+/** POST /signin */
 export async function loginApi(payload: LoginPayload) {
-  return api.post<{ token?: string; user?: unknown }>("/auth/login", payload);
+  return postSignin({
+    email: payload.email,
+    password: payload.password,
+  });
 }
 
+/** POST /register */
 export async function registerApi(payload: RegisterPayload) {
-  return api.post<{ token?: string; user?: unknown }>("/auth/register", payload);
+  return postRegister({
+    fullName: payload.fullName,
+    email: payload.email,
+    password: payload.password,
+    role: payload.role,
+  });
 }

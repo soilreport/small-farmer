@@ -1,10 +1,14 @@
 // src/pages/readings/Readings.tsx
 // Soil readings: Temperature, Moisture, pH, NPK + Charts + Recent Activity + FAQ
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import "./Readings.css";
 import ReadingsCharts from "./ReadingsCharts";
 import { useSoilInsights } from "../../context/SoilInsightsContext";
+import { isApiConfigured, API_DEVICE_ID } from "../../config/env";
+import { getDeviceStateLatest } from "../../api/deviceService";
+import { mapDevicePayloadToReadings } from "../../utils/mapDevicePayload";
+import Button from "../../components/common1/Button/Button";
 import type { SoilMetric } from "../research/researchData";
 import { formatMetricValue } from "../../utils/formatters";
 import { DEFAULT_NO_DATA_TEXT } from "../../utils/constants";
@@ -15,6 +19,48 @@ import { DEFAULT_NO_DATA_TEXT } from "../../utils/constants";
  */
 export default function Readings() {
   const { readings, setReadings, insights } = useSoilInsights();
+
+  const [deviceIdInput, setDeviceIdInput] = useState(API_DEVICE_ID);
+  const [apiLoading, setApiLoading] = useState(false);
+  const [apiMessage, setApiMessage] = useState<string | null>(null);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  const fetchFromBackend = useCallback(async () => {
+    if (!isApiConfigured()) {
+      setApiError("Set VITE_API_BASE_URL in .env.local (see .env.example).");
+      setApiMessage(null);
+      return;
+    }
+    const id = deviceIdInput.trim() || API_DEVICE_ID;
+    setApiLoading(true);
+    setApiError(null);
+    setApiMessage(null);
+    try {
+      const res = await getDeviceStateLatest(id);
+      if (!res.ok) {
+        setApiError(res.error || "Request failed");
+        return;
+      }
+      const partial = mapDevicePayloadToReadings(res.data);
+      const keys = Object.keys(partial).filter(
+        (k) => partial[k as keyof typeof partial] !== undefined
+      );
+      if (keys.length === 0) {
+        setApiMessage(
+          "Backend responded OK, but no temperature/moisture/pH fields were recognized. Check mapDevicePayload.ts field names."
+        );
+        console.log("Backend JSON (raw):", res.data);
+        return;
+      }
+      setReadings((prev) => ({ ...prev, ...partial }));
+      setApiMessage(`Loaded ${keys.length} value(s) from backend for device ${id}.`);
+      console.log("Backend device state:", res.data);
+    } catch (e) {
+      setApiError(e instanceof Error ? e.message : "Unknown error");
+    } finally {
+      setApiLoading(false);
+    }
+  }, [deviceIdInput, setReadings]);
 
   const FAQ_ITEMS = [
     {
@@ -60,6 +106,49 @@ export default function Readings() {
     <div className="readings-container">
       <h1>Soil Readings</h1>
       <p>Current sensor readings and recent activity.</p>
+
+      {isApiConfigured() && (
+        <div className="readings-api-section recent-activity">
+          <h2>Backend sensor data</h2>
+          <p className="readings-api-hint">
+            Fetches <code>GET /device-state-latest?deviceId=…</code> and maps fields into the cards
+            above. Configure <code>VITE_API_BASE_URL</code> and optional{" "}
+            <code>VITE_API_TOKEN</code> in <code>.env.local</code>.
+          </p>
+          <div className="readings-api-row">
+            <label className="readings-api-label">
+              Device ID
+              <input
+                type="text"
+                value={deviceIdInput}
+                onChange={(e) => setDeviceIdInput(e.target.value)}
+                placeholder={API_DEVICE_ID}
+              />
+            </label>
+            <Button
+              type="button"
+              variant="primary"
+              onClick={() => void fetchFromBackend()}
+              disabled={apiLoading}
+            >
+              {apiLoading ? "Loading…" : "Fetch from backend"}
+            </Button>
+          </div>
+          {apiError && <p className="readings-api-error">{apiError}</p>}
+          {apiMessage && <p className="readings-api-success">{apiMessage}</p>}
+        </div>
+      )}
+
+      {!isApiConfigured() && (
+        <div className="readings-api-section readings-api-section--muted recent-activity">
+          <h2>Backend sensor data</h2>
+          <p>
+            To load live data from your API, create <code>.env.local</code> with{" "}
+            <code>VITE_API_BASE_URL</code> (see <code>.env.example</code>) and restart{" "}
+            <code>npm run dev</code>.
+          </p>
+        </div>
+      )}
 
       {/* Local controls to simulate live sensor readings */}
       <div className="recent-activity" style={{ marginBottom: 18 }}>
