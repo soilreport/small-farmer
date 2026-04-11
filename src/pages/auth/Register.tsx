@@ -105,16 +105,15 @@ export default function Register() {
       });
 
       navigate("/dashboard");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Register error:", err);
+      const msg =
+        err instanceof Error ? err.message : "Registration failed. Please try again.";
 
-      // Better error messages
-      if (err?.message?.toLowerCase().includes("email")) {
-        setApiError("This email is already registered. Try logging in instead.");
-      } else if (err?.message?.toLowerCase().includes("network")) {
+      if (msg.toLowerCase().includes("network") || msg.toLowerCase().includes("fetch")) {
         setApiError("Network error. Please check your connection.");
       } else {
-        setApiError("Registration failed. Please try again.");
+        setApiError(msg);
       }
     } finally {
       setLoading(false);

@@ -1,5 +1,10 @@
 // src/context/AuthContext.tsx
 import { createContext, useState, useContext, type ReactNode } from "react";
+import {
+  signInWithPassword as firebaseSignIn,
+  signUpWithPassword as firebaseSignUp,
+} from "../api/firebaseAuth";
+import { setSessionIdToken } from "../lib/authTokenStorage";
 
 export interface User {
   id: string;
@@ -62,22 +67,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     setError(null);
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
       const cleanEmail = email.trim();
       if (!cleanEmail) throw new Error("Email is required");
       if (!password || password.length < 6) throw new Error("Password is too short");
 
-      const mockUser: User = {
-        id: Math.random().toString(36).substring(2) + Date.now().toString(36),
-        email: cleanEmail,
-        fullName: options?.fullName?.trim() || deriveNameFromEmail(cleanEmail),
-        role: options?.role || deriveRoleFromEmail(cleanEmail),
+      const fb = await firebaseSignIn(cleanEmail, password);
+      setSessionIdToken(fb.idToken);
+
+      const nextUser: User = {
+        id: fb.localId,
+        email: fb.email,
+        fullName: options?.fullName?.trim() || deriveNameFromEmail(fb.email),
+        role: options?.role || deriveRoleFromEmail(fb.email),
       };
 
-      setUser(mockUser);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(mockUser));
+      setUser(nextUser);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextUser));
     } catch (err: any) {
       console.error("Login failed:", err);
       setError(err.message || "Login failed");
@@ -91,9 +96,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     setError(null);
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
       const fullName = data.fullName.trim();
       const email = data.email.trim();
 
@@ -101,18 +103,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!email) throw new Error("Email is required");
       if (!data.password || data.password.length < 6) throw new Error("Password too short");
 
+      const fb = await firebaseSignUp(email, data.password);
+      setSessionIdToken(fb.idToken);
+
       const newUser: User = {
-        id: Math.random().toString(36).substring(2) + Date.now().toString(36),
-        email,
+        id: fb.localId,
+        email: fb.email,
         fullName,
         role: data.role,
       };
 
       setUser(newUser);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newUser));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Register failed:", err);
-      setError(err.message || "Registration failed");
+      const msg = err instanceof Error ? err.message : "Registration failed";
+      setError(msg);
       throw err;
     } finally {
       setLoading(false);
@@ -122,6 +128,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem(STORAGE_KEY);
+    setSessionIdToken(null);
   };
 
   const contextValue: AuthContextType = {

@@ -1,53 +1,43 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/common1/Button/Button";
 import Card from "../components/Card";
 import "./Purchases.css";
 
-const UPGRADES = [
-  {
-    id: "pro",
-    name: "Pro plan",
-    description: "Unlimited devices, advanced analytics, and priority support.",
-    price: "9.99",
-    period: "/month",
-  },
-  {
-    id: "export",
-    name: "Export pack",
-    description: "CSV/Excel export and scheduled reports.",
-    price: "4.99",
-    period: "/month",
-  },
-  {
-    id: "alerts",
-    name: "Smart alerts",
-    description: "Custom thresholds and SMS/email notifications.",
-    price: "2.99",
-    period: "/month",
-  },
-];
+const ADDITIONAL_KIT = {
+  name: "Additional kit",
+  description:
+    "Extra soil monitoring hardware: sensors, mounting kit, and quick-start guide.",
+};
 
 export default function Purchases() {
-  const [selected, setSelected] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const goToPaymentConfirmation = () => {
+    navigate("/purchases/payment-confirmation", {
+      state: { kitName: ADDITIONAL_KIT.name },
+    });
+  };
 
   return (
     <div className="purchases-page">
-      <h1>Upgrades & add-ons</h1>
+      <h1>Upgrades &amp; add-ons</h1>
       <p className="purchases-subtitle">Extend Small Farmer with extra features.</p>
-      <div className="purchases-grid">
-        {UPGRADES.map((u) => (
-          <Card key={u.id} title={u.name}>
-            <p className="purchase-card-desc">{u.description}</p>
-            <p className="purchase-card-price">${u.price}{u.period}</p>
-            <Button
-              variant={selected === u.id ? "primary" : "secondary"}
-              onClick={() => setSelected(u.id)}
-            >
-              {selected === u.id ? "Selected" : "Select"}
-            </Button>
-          </Card>
-        ))}
-      </div>
+
+      <section className="purchases-kit-section" aria-labelledby="additional-kit-heading">
+        <h2 id="additional-kit-heading" className="purchases-section-title">
+          {ADDITIONAL_KIT.name}
+        </h2>
+        <p className="purchases-section-intro">
+          Order an extra hardware kit for another field or backup sensors. Available only here on Purchases.
+        </p>
+        <Card>
+          <p className="purchase-card-desc">{ADDITIONAL_KIT.description}</p>
+          <Button variant="primary" type="button" onClick={goToPaymentConfirmation}>
+            Buy new kit
+          </Button>
+        </Card>
+      </section>
+
       <p className="purchases-note">
         This is a demo. In production you would connect to a payment provider.
       </p>

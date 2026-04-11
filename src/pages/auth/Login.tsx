@@ -62,20 +62,19 @@ export default function Login() {
     try {
       await login(formData.email.trim(), formData.password);
       navigate("/dashboard");
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Login error:", error);
+      const msg =
+        error instanceof Error ? error.message : "Login failed. Please try again.";
 
-      // Better user-friendly error handling
-      if (error?.message?.toLowerCase().includes("network")) {
+      if (msg.toLowerCase().includes("network") || msg.toLowerCase().includes("fetch")) {
         setApiError("Network error. Please check your internet connection.");
       } else {
-        setApiError("Invalid email or password. Please try again.");
+        // Show Firebase / auth message (wrong password, unknown user, missing API key, etc.)
+        setApiError(msg);
       }
 
-      setErrors({
-        email: "Invalid email or password",
-        password: "Invalid email or password",
-      });
+      setErrors({ email: "", password: "" });
     } finally {
       setLoading(false);
     }
@@ -161,7 +160,7 @@ export default function Login() {
             placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
-            className={errors.email ? "error" : ""}
+            className={errors.email || apiError ? "error" : ""}
             disabled={loading}
             autoComplete="email"
           />
@@ -179,7 +178,7 @@ export default function Login() {
             placeholder="Enter your password"
             value={formData.password}
             onChange={handleChange}
-            className={errors.password ? "error" : ""}
+            className={errors.password || apiError ? "error" : ""}
             disabled={loading}
             autoComplete="current-password"
           />

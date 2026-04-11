@@ -1,19 +1,12 @@
-/**
- * Vite injects VITE_* at build time. Use .env.local for secrets (gitignored via *.local).
- * Never commit real tokens.
- *
- * Base URL: use VITE_API_BASE_URL or VITE_API_URL (same meaning).
- */
 function trimUrl(url: string): string {
   return url.trim().replace(/\/+$/, "");
 }
 
-const rawBase =
-  import.meta.env.VITE_API_BASE_URL ?? import.meta.env.VITE_API_URL ?? "";
+const rawBase = "https://soil-repo-gcp-git-678290165816.europe-west1.run.app";
 
 export const API_BASE_URL = trimUrl(String(rawBase));
 export const API_TOKEN = (import.meta.env.VITE_API_TOKEN ?? "").trim();
-/** Default device id for “fetch latest” on Readings */
+export const FIREBASE_WEB_API_KEY = (import.meta.env.VITE_FIREBASE_WEB_API_KEY ?? "").trim();
 export const API_DEVICE_ID = (import.meta.env.VITE_API_DEVICE_ID ?? "1").trim();
 export const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 

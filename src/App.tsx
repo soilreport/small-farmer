@@ -16,6 +16,7 @@ import Profile from "./pages/profile/Profile";
 import Settings from "./pages/profile/Settings";
 import Export from "./pages/Export";
 import Purchases from "./pages/Purchases";
+import PaymentConfirmation from "./pages/purchases/PaymentConfirmation";
 import FarmerTools from "./pages/tools/FarmerTools";
 import Resources from "./pages/info/Resources";
 import CropRegionPage from "./pages/dynamic/CropRegionPage";
@@ -57,6 +58,10 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/export" element={<Export />} />
           <Route path="/purchases" element={<Purchases />} />
+          <Route
+            path="/purchases/payment-confirmation"
+            element={<PaymentConfirmation />}
+          />
           <Route path="/tools" element={<FarmerTools />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/crops/:cropId" element={<CropRegionPage />} />

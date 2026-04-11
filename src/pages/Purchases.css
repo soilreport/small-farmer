@@ -17,11 +17,21 @@
   margin-bottom: 1.5rem;
 }
 
-.purchases-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+.purchases-kit-section {
+  margin-bottom: 1rem;
+}
+
+.purchases-section-title {
+  font-size: 1.15rem;
+  margin: 0 0 0.5rem 0;
+  color: var(--sf-color-text);
+}
+
+.purchases-section-intro {
+  font-size: 0.9rem;
+  color: var(--sf-color-text-muted);
+  margin: 0 0 1rem 0;
+  max-width: 42rem;
 }
 
 .purchases-page .purchases-note {

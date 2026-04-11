@@ -1,4 +1,5 @@
 import { API_BASE_URL, API_TOKEN } from "../config/env";
+import { getSessionIdToken } from "../lib/authTokenStorage";
 
 export interface ApiResponse<T = unknown> {
   ok: boolean;
@@ -9,7 +10,8 @@ export interface ApiResponse<T = unknown> {
 
 function baseHeaders(includeJson: boolean): Record<string, string> {
   const h: Record<string, string> = { Accept: "application/json" };
-  if (API_TOKEN) h.Authorization = `Bearer ${API_TOKEN}`;
+  const bearer = getSessionIdToken() || API_TOKEN;
+  if (bearer) h.Authorization = `Bearer ${bearer}`;
   if (includeJson) h["Content-Type"] = "application/json";
   return h;
 }
