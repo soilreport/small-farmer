@@ -3,8 +3,12 @@ import { createContext, useState, useContext, type ReactNode } from "react";
 import {
   signInWithPassword as firebaseSignIn,
   signUpWithPassword as firebaseSignUp,
+  postAuthBootstrap,
 } from "../api/firebaseAuth";
-import { setSessionIdToken } from "../lib/authTokenStorage";
+import {
+  clearFirebaseSession,
+  setFirebaseSessionTokens,
+} from "../lib/authTokenStorage";
 
 export interface User {
   id: string;
@@ -17,7 +21,7 @@ export type RegisterPayload = {
   fullName: string;
   email: string;
   password: string;
-  role: "farmer" | "researcher";
+  phoneNumber: string;
 };
 
 type LoginOptions = {
@@ -72,7 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (!password || password.length < 6) throw new Error("Password is too short");
 
       const fb = await firebaseSignIn(cleanEmail, password);
-      setSessionIdToken(fb.idToken);
+      setFirebaseSessionTokens(fb.idToken, fb.refreshToken);
 
       const nextUser: User = {
         id: fb.localId,
@@ -83,9 +87,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       setUser(nextUser);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(nextUser));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Login failed:", err);
-      setError(err.message || "Login failed");
+      const msg = err instanceof Error ? err.message : "Login failed";
+      setError(msg);
       throw err;
     } finally {
       setLoading(false);
@@ -98,19 +103,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const fullName = data.fullName.trim();
       const email = data.email.trim();
+      const phoneNumber = data.phoneNumber.trim();
 
       if (!fullName) throw new Error("Full name is required");
       if (!email) throw new Error("Email is required");
       if (!data.password || data.password.length < 6) throw new Error("Password too short");
+      if (!phoneNumber) throw new Error("Phone number is required");
 
       const fb = await firebaseSignUp(email, data.password);
-      setSessionIdToken(fb.idToken);
+      setFirebaseSessionTokens(fb.idToken, fb.refreshToken);
+
+      await postAuthBootstrap(fb.idToken, { fullName, phoneNumber });
 
       const newUser: User = {
         id: fb.localId,
         email: fb.email,
         fullName,
-        role: data.role,
+        role: deriveRoleFromEmail(fb.email),
       };
 
       setUser(newUser);
@@ -119,6 +128,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error("Register failed:", err);
       const msg = err instanceof Error ? err.message : "Registration failed";
       setError(msg);
+      clearFirebaseSession();
       throw err;
     } finally {
       setLoading(false);
@@ -128,7 +138,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem(STORAGE_KEY);
-    setSessionIdToken(null);
+    clearFirebaseSession();
   };
 
   const contextValue: AuthContextType = {

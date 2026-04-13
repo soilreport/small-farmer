@@ -13,13 +13,14 @@ export default function Register() {
     fullName: "",
     email: "",
     password: "",
-    role: "farmer" as "farmer" | "researcher",
+    phoneNumber: "",
   });
 
   const [errors, setErrors] = useState({
     fullName: "",
     email: "",
     password: "",
+    phoneNumber: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -30,6 +31,7 @@ export default function Register() {
       fullName: "",
       email: "",
       password: "",
+      phoneNumber: "",
     };
 
     let isValid = true;
@@ -37,6 +39,7 @@ export default function Register() {
     const fullName = form.fullName.trim();
     const email = form.email.trim();
     const password = form.password;
+    const phoneNumber = form.phoneNumber.trim();
 
     const nameRequired = validateRequired(fullName, "Full name");
     if (!nameRequired.valid) {
@@ -62,13 +65,20 @@ export default function Register() {
       isValid = false;
     }
 
+    const phoneRequired = validateRequired(phoneNumber, "Phone number");
+    if (!phoneRequired.valid) {
+      newErrors.phoneNumber = "Please enter your phone number";
+      isValid = false;
+    } else if (phoneNumber.replace(/\s/g, "").length < 8) {
+      newErrors.phoneNumber = "Enter a valid phone number (e.g. +994501234567)";
+      isValid = false;
+    }
+
     setErrors(newErrors);
     return isValid;
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     setForm((prev) => ({
@@ -101,7 +111,8 @@ export default function Register() {
         fullName: form.fullName.trim(),
         email: form.email.trim(),
         password: form.password,
-        role: form.role,
+        phoneNumber: form.phoneNumber.trim(),
+        // role: form.role,
       });
 
       navigate("/dashboard");
@@ -189,6 +200,26 @@ export default function Register() {
         </div>
 
         <div className="input-group">
+          <label htmlFor="phoneNumber">Phone number</label>
+          <input
+            id="phoneNumber"
+            name="phoneNumber"
+            type="tel"
+            placeholder="e.g. +994514701500"
+            value={form.phoneNumber}
+            onChange={handleChange}
+            disabled={loading}
+            autoComplete="tel"
+            className={errors.phoneNumber ? "error" : ""}
+          />
+          {errors.phoneNumber && (
+            <span className="error-text">{errors.phoneNumber}</span>
+          )}
+        </div>
+
+        {/*
+        Role — not sent to backend yet; restore when API supports it.
+        <div className="input-group">
           <label htmlFor="role">Role</label>
           <select
             id="role"
@@ -201,6 +232,7 @@ export default function Register() {
             <option value="researcher">Researcher</option>
           </select>
         </div>
+        */}
 
         <button type="submit" className="auth-button" disabled={loading}>
           {loading ? (

@@ -1,5 +1,10 @@
 import { API_BASE_URL, API_TOKEN } from "../config/env";
-import { getSessionIdToken } from "../lib/authTokenStorage";
+import { refreshIdToken } from "./firebaseAuth";
+import {
+  getRefreshToken,
+  getSessionIdToken,
+  setFirebaseSessionTokens,
+} from "../lib/authTokenStorage";
 
 export interface ApiResponse<T = unknown> {
   ok: boolean;
@@ -16,6 +21,18 @@ function baseHeaders(includeJson: boolean): Record<string, string> {
   return h;
 }
 
+async function tryRefreshFirebaseAndUpdateSession(): Promise<boolean> {
+  const rt = getRefreshToken();
+  if (!rt) return false;
+  try {
+    const next = await refreshIdToken(rt);
+    setFirebaseSessionTokens(next.idToken, next.refreshToken);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 async function parseBody(res: Response): Promise<unknown> {
   const text = await res.text();
   if (!text) return undefined;
@@ -28,7 +45,8 @@ async function parseBody(res: Response): Promise<unknown> {
 
 async function request<T>(
   path: string,
-  options?: RequestInit
+  options?: RequestInit,
+  retriedAfterRefresh = false
 ): Promise<ApiResponse<T>> {
   if (!API_BASE_URL) {
     return { ok: false, error: "VITE_API_BASE_URL is not set. Add it in .env.local." };
@@ -50,6 +68,11 @@ async function request<T>(
       headers,
     });
     const data = (await parseBody(res)) as T | undefined;
+
+    if (res.status === 401 && !retriedAfterRefresh && (await tryRefreshFirebaseAndUpdateSession())) {
+      return request<T>(path, options, true);
+    }
+
     if (!res.ok) {
       const msg =
         data && typeof data === "object" && data !== null && "message" in data

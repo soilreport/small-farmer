@@ -1,9 +1,20 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { copyFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 
-// https://vite.dev/config/
+/** GitHub Pages has no “fallback to index.html”. Copying the built shell to 404.html fixes refresh on routes like /login. */
+function copyIndexTo404() {
+  return {
+    name: "copy-index-to-404",
+    closeBundle() {
+      const dist = resolve(process.cwd(), "dist");
+      copyFileSync(resolve(dist, "index.html"), resolve(dist, "404.html"));
+    },
+  };
+}
+
 export default defineConfig(({ command }) => ({
-  plugins: [react()],
-  // GitHub Pages serves from https://soilreport.github.io/small-farmer/
-  base: command === 'build' ? '/small-farmer/' : '/',
-}))
+  plugins: [react(), ...(command === "build" ? [copyIndexTo404()] : [])],
+  base: command === "build" ? "/small-farmer/" : "/",
+}));

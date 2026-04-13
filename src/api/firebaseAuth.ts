@@ -1,9 +1,11 @@
-import { FIREBASE_WEB_API_KEY } from "../config/env";
+import { API_BASE_URL, FIREBASE_WEB_API_KEY } from "../config/env";
 
 const SIGN_IN_URL =
   "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword";
 
 const SIGN_UP_URL = "https://identitytoolkit.googleapis.com/v1/accounts:signUp";
+
+const SECURE_TOKEN_URL = "https://securetoken.googleapis.com/v1/token";
 
 export interface FirebaseSignInResponse {
   localId: string;
@@ -35,7 +37,7 @@ export async function signInWithPassword(
   const key = FIREBASE_WEB_API_KEY.trim();
   if (!key) {
     throw new Error(
-      "Firebase Web API key is not set. Add VITE_FIREBASE_WEB_API_KEY to .env.local (see Postman /signin)."
+      "Firebase Web API key is not set. Add VITE_FIREBASE_WEB_API_KEY to local env or deployment secrets (see Postman /signin)."
     );
   }
 
@@ -83,7 +85,7 @@ export async function signUpWithPassword(
   const key = FIREBASE_WEB_API_KEY.trim();
   if (!key) {
     throw new Error(
-      "Firebase Web API key is not set. Add VITE_FIREBASE_WEB_API_KEY to .env.local (see Postman /register)."
+      "Firebase Web API key is not set. Add VITE_FIREBASE_WEB_API_KEY to local env or deployment secrets (see Postman /register)."
     );
   }
 
@@ -122,4 +124,88 @@ export async function signUpWithPassword(
     refreshToken: data.refreshToken ?? "",
     expiresIn: data.expiresIn ?? "",
   };
+}
+
+export async function refreshIdToken(refreshToken: string): Promise<{
+  idToken: string;
+  refreshToken: string;
+  expiresIn: string;
+}> {
+  const key = FIREBASE_WEB_API_KEY.trim();
+  if (!key) {
+    throw new Error(
+      "Firebase Web API key is not set. Add VITE_FIREBASE_WEB_API_KEY to local env or deployment secrets."
+    );
+  }
+
+  const url = `${SECURE_TOKEN_URL}?key=${encodeURIComponent(key)}`;
+  const body = new URLSearchParams({
+    grant_type: "refresh_token",
+    refresh_token: refreshToken,
+  });
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: body.toString(),
+  });
+
+  const data = (await res.json()) as {
+    id_token?: string;
+    refresh_token?: string;
+    expires_in?: string;
+    error?: { message?: string };
+  };
+
+  if (!res.ok || !data.id_token) {
+    const msg = data.error?.message ?? "Token refresh failed";
+    throw new Error(msg);
+  }
+
+  return {
+    idToken: data.id_token,
+    refreshToken: data.refresh_token ?? refreshToken,
+    expiresIn: String(data.expires_in ?? "3600"),
+  };
+}
+
+export type AuthBootstrapPayload = {
+  fullName: string;
+  phoneNumber: string;
+};
+
+export async function postAuthBootstrap(
+  idToken: string,
+  payload: AuthBootstrapPayload
+): Promise<void> {
+  const base = API_BASE_URL.replace(/\/+$/, "");
+  const url = `${base}/auth/bootstrap`;
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${idToken}`,
+    },
+    body: JSON.stringify({
+      fullName: payload.fullName.trim(),
+      phoneNumber: payload.phoneNumber.trim(),
+    }),
+  });
+
+  const text = await res.text();
+  let errMsg = res.statusText;
+  if (text) {
+    try {
+      const j = JSON.parse(text) as { message?: string };
+      if (j.message) errMsg = j.message;
+    } catch {
+      errMsg = text;
+    }
+  }
+
+  if (!res.ok) {
+    throw new Error(errMsg || `Bootstrap failed (${res.status})`);
+  }
 }
