@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
@@ -66,7 +67,10 @@ function App() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/crops/:cropId" element={<CropRegionPage />} />
           <Route path="/regions/:regionId" element={<CropRegionPage />} />
-          <Route path="/regions/:regionId/crops/:cropId" element={<CropRegionPage />} />
+          <Route
+            path="/regions/:regionId/crops/:cropId"
+            element={<CropRegionPage />}
+          />
 
           <Route path="/admin" element={<AdminRoute />}>
             <Route index element={<Navigate to="users" replace />} />
@@ -80,7 +84,6 @@ function App() {
         <Route path="/home" element={<Navigate to="/dashboard" replace />} />
       </Routes>
 
-      {/* Footer only on non-auth pages */}
       <Footer />
     </>
   );
