@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import "./CropRegionPage.css";
 
 type CropId = "wheat" | "tomato" | "potato" | "grape" | "barley" | "maize" | string;
@@ -140,13 +140,13 @@ export default function CropRegionPage() {
               const guide = CROP_GUIDES[id];
               const name = guide?.name ?? id;
               return (
-                <a
+                <Link
                   key={id}
-                  href={`/small-farmer/regions/${regionKey}/crops/${id}`}
+                  to={`/regions/${regionKey}/crops/${id}`}
                   className="crop-pill"
                 >
                   {name}
-                </a>
+                </Link>
               );
             })}
           </div>

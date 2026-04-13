@@ -10,9 +10,11 @@ import { DeviceProvider } from "./context/DeviceContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { AuthProvider } from "./context/AuthContext";
 
+const basename = import.meta.env.BASE_URL.replace(/\/$/, "") || undefined;
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={basename}>
       <AuthProvider>
         <SoilInsightsProvider>
           <ThemeProvider>
