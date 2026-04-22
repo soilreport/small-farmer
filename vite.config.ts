@@ -7,7 +7,8 @@ import react from "@vitejs/plugin-react";
  * GitHub Pages (project site) does not SPA-fallback. Writing the same built
  * `index.html` at each static path gives a real file so refresh works with
  * clean URLs (no `#`). Keep in sync with static routes in `App.tsx` and known
- * crop/region paths. `/devices/:id` cannot be enumerated — refresh there may 404.
+ * crop/region paths. `404.html` is also written as a generic SPA fallback so
+ * dynamic paths and missed static paths can still boot the React app.
  */
 const SPA_HTML_SUBPATHS = [
   "login",
@@ -57,6 +58,7 @@ function copyIndexHtmlToStaticRoutes() {
         mkdirSync(dir, { recursive: true });
         writeFileSync(resolve(dir, "index.html"), html, "utf8");
       }
+      writeFileSync(resolve(dist, "404.html"), html, "utf8");
     },
   };
 }
