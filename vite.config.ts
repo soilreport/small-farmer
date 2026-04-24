@@ -67,3 +67,4 @@ export default defineConfig(({ command }) => ({
   plugins: [react(), ...(command === "build" ? [copyIndexHtmlToStaticRoutes()] : [])],
   base: command === "build" ? "/small-farmer/" : "/",
 }));
+
